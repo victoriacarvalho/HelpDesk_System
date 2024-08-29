@@ -11,6 +11,7 @@ export const postChamado = catchAsyncErrors(async (req, res, next) => {
         email,
         phone,
         sector,
+        chamado_date,
         title,
         description,
     } = req.body;
@@ -23,6 +24,7 @@ export const postChamado = catchAsyncErrors(async (req, res, next) => {
         !sector ||
         !title ||
         !description
+        
     ) {
         return next(new ErrorHandler("Por favor, preencha todo o formulário!", 400));
     }

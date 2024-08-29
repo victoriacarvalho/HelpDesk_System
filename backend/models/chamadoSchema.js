@@ -49,6 +49,10 @@ const chamadoSchema = new mongoose.Schema({
         required: [true, "Descrição é necessário!"],
         minlength: [10, "Descrição deve conter ao menos 10 caracteres!"],
     },
+    chamado_date: {
+        type: Date,
+        default: Date.now,
+      },
 });
 
 export const Chamado = mongoose.model("Chamado", chamadoSchema);

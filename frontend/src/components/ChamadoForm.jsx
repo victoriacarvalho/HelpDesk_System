@@ -14,6 +14,7 @@ const ChamadoForm = () => {
     const [description, setDescription] = useState("");
     const [tecnicoFirstName, setTecnicoFirstName] = useState("");
     const [tecnicoLastName, setTecnicoLastName] = useState("");
+    const [chamado_date, setChamadoDate] = useState("");
 
 const [tecnicos, setTecnicos] = useState([]);
   useEffect(() => {
@@ -40,6 +41,7 @@ const [tecnicos, setTecnicos] = useState([]);
                     phone,
                     sector,
                     title,
+                    chamado_date,
                     description
                 },
                 {
@@ -55,6 +57,7 @@ const [tecnicos, setTecnicos] = useState([]);
             setPhone("");
             setSector("");
             setTitle("");
+            setChamadoDate("");
             setDescription("");
             setTecnicoFirstName("");
             setTecnicoLastName("");
