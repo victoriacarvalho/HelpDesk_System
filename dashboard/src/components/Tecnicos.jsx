@@ -9,6 +9,7 @@ import { Navigate } from "react-router-dom";
 const Tecnicos = () => {
     const [tecnicos, setTecnicos] = useState([]);
     const { isAuthenticated } = useContext(Context);
+
     useEffect(() => {
       const fetchTecnicos = async () => {
         try {
@@ -18,7 +19,7 @@ const Tecnicos = () => {
           );
           setTecnicos(data.tecnicos);
         } catch (error) {
-          toast.error(error.response.data.message);
+          toast.error(error.response?.data?.message || "Erro ao buscar técnicos");
         }
       };
       fetchTecnicos();
@@ -27,43 +28,37 @@ const Tecnicos = () => {
     if (!isAuthenticated) {
         return <Navigate to={"/login"} />;
     }
-    
-      return (
+
+    return (
         <section className="page tecnicos">
-          <h1>TÉCNICOS</h1>
-          <div className="banner">
-            {tecnicos && tecnicos.length > 0 ? (
-              tecnicos.map((element) => {
-                return (
-                  <div className="card">
-                    <img
-                      src={element.tecAvatar && element.tecAvatar.url}
-                      alt="tecnico avatar"
-                    />
-                    <h4>{`${element.firstName} ${element.lastName}`}</h4>
-                    <div className="details">
-                      <p>
-                        E-mail: <span>{element.email}</span>
-                      </p>
-                      <p>
-                        Celular: <span>{element.phone}</span>
-                      </p>
-                      <p>
-                        Setor: <span>{element.sector.substring(0, 10)}</span>
-                      </p>
-                      <p>
-                        Matrícula: <span>{element.registration}</span>
-                      </p>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <h1>Técnico não registrado!</h1>
-            )}
-          </div>
+            <h1>TÉCNICOS</h1>
+            <div className="banner">
+                {tecnicos && tecnicos.length > 0 ? (
+                    tecnicos.map((tecnico) => (
+                        <div key={tecnico._id} className="card">
+                            <h4>{`${tecnico.firstName} ${tecnico.lastName}`}</h4>
+                            <div className="details">
+                                <p>
+                                    E-mail: <span>{tecnico.email}</span>
+                                </p>
+                                <p>
+                                    Celular: <span>{tecnico.phone}</span>
+                                </p>
+                                <p>
+                                    Setor: <span>{tecnico.sector.substring(0, 10)}</span>
+                                </p>
+                                <p>
+                                    Matrícula: <span>{tecnico.registration}</span>
+                                </p>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <h1>Técnico não registrado!</h1>
+                )}
+            </div>
         </section>
-      );
-    };
-    
-    export default Tecnicos;
+    );
+};
+
+export default Tecnicos;

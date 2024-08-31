@@ -7,7 +7,7 @@ const Chamado = () => {
     <>
       <Hero
         title={"Abertura de chamados"}
-        imageUrl={"/signin.png"}
+        imageUrl={"/conctact.png"}
       />
       <ChamadoForm/>
     </>

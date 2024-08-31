@@ -195,7 +195,7 @@ h6 {
   border-radius: 8px;
   font-size: 24px;
   margin-bottom: 30px;
-  background: linear-gradient(140deg, #9083d5, #FF025D);
+  background: linear-gradient(140deg, #1c4529, #8dab84);
 }
 .form-component .wrapper {
   display: flex;
@@ -335,7 +335,7 @@ footer .content div ul a {
   text-decoration: none;
 }
 footer .content div ul a:hover {
-  color: #FF025D;
+  color: #8dab84;
   transition: 0.3s;
 }
 footer .content div ul li span {
@@ -483,10 +483,10 @@ nav .btn {
   z-index: 2;
 }
 nav .logoutBtn {
-  background: linear-gradient(140deg, #9083d5, #FF025D);
+  background: linear-gradient(140deg, #1c4529, #8dab84);
 }
 nav .loginBtn {
-  background: linear-gradient(140deg, #9083d5, #FF025D);
+  background: linear-gradient(140deg, #1c4529, #8dab84);
 }
 nav .hamburger {
   display: none;

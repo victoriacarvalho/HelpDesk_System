@@ -93,3 +93,28 @@ export const deleteChamado = catchAsyncErrors(async (req, res, next) => {
         message: "Chamado deletado!",
     });
 });
+
+export const countChamado = catchAsyncErrors(async (req, res, next) => {
+    try {
+      const count = await Chamado.countDocuments(); // Conta todos os documentos na coleção Chamado
+      res.status(200).json({ count });
+    } catch (error) {
+      next(new ErrorHandler('Erro ao contar chamados', 500)); // Usa ErrorHandler para lidar com erros
+    }
+  });
+
+  export const getChamadoById = catchAsyncErrors(async (req, res, next) => {
+    const { id } = req.params;
+
+    const chamado = await Chamado.findById(id);
+    if (!chamado) {
+        return next(new ErrorHandler("Chamado não encontrado!", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        chamado,
+    });
+});
+
+  

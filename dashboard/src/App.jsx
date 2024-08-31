@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./components/Sidebar";
 import AddNewAdmin from "./components/AddNewAdmin";
 import "./App.css";
+import ChamadoDetails from "./components/ChamadoDetails";
 
 
 const App = () => {
@@ -50,6 +51,7 @@ const App = () => {
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/tecnicos" element={<Tecnicos />} />
+        <Route path="/chamadoDetails/:id" element={<ChamadoDetails/>}/>
       </Routes>
       <ToastContainer position="top-center" />
     </Router>

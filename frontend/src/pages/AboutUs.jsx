@@ -1,12 +1,11 @@
-import Hero from "../components/Hero";
 import Biography from "../components/Biography";
+import MessageForm from "../components/MessageForm";
 
 const AboutUs = () => {
   return (
     <>
-      <Hero title={"Ticket+"} imageUrl={"/whoweare.png"}
-      />
-      <Biography imageUrl={"/sobrenos.png"}/>
+      <Biography/>
+      <MessageForm/> 
     </>
 
   );

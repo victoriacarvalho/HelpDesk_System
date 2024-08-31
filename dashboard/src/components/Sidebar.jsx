@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from "react";
 import { TiHome } from "react-icons/ti";
-import { RiLogoutBoxFill } from "react-icons/ri";
-import { AiFillMessage } from "react-icons/ai";
+import { CiLogout } from "react-icons/ci";
+import { RiMessage2Line } from "react-icons/ri";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaUserDoctor } from "react-icons/fa6";
-import { MdAddModerator } from "react-icons/md";
+import { FaUserGear } from "react-icons/fa6";
+import { GrUserAdmin } from "react-icons/gr";
 import { IoPersonAddSharp } from "react-icons/io5";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -20,7 +20,7 @@ const Sidebar = () => {
   
     const handleLogout = async () => {
       await axios
-        .get("http://localhost:4000/api/v1/user/admin/logout", {
+        .get("http://localhost:4000/api/v1/user/logout/admin", {
           withCredentials: true,
         })
         .then((res) => {
@@ -63,11 +63,11 @@ const Sidebar = () => {
         >
           <div className="links">
             <TiHome onClick={gotoHomePage} />
-            <FaUserDoctor onClick={gotoTecnicosPage} />
-            <MdAddModerator onClick={gotoAddNewAdmin} />
+            <FaUserGear onClick={gotoTecnicosPage} />
+            <GrUserAdmin  onClick={gotoAddNewAdmin} />
             <IoPersonAddSharp onClick={gotoAddNewTecnico} />
-            <AiFillMessage onClick={gotoMessagesPage} />
-            <RiLogoutBoxFill onClick={handleLogout} />
+            <RiMessage2Line  onClick={gotoMessagesPage} />
+            <CiLogout onClick={handleLogout} />
           </div>
         </nav>
         <div

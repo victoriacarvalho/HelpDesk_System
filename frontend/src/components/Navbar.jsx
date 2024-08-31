@@ -45,7 +45,7 @@ const Navbar = () => {
               Abrir chamado
             </Link>
             <Link to={"/aboutUs"} onClick={() => setShow(!show)}>
-              Sobre nós
+              Enviar Mensagem
             </Link>
           </div>
           {isAuthenticated ?(

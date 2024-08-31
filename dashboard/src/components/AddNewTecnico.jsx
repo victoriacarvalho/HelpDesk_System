@@ -15,20 +15,8 @@ const AddNewtecnico = () => {
     const [password, setPassword] = useState("");
     const [sector, setSector] = useState("");
     const [registration, setRegistration] = useState("");
-    const [tecAvatar, setTecAvatar] = useState("");
-    const [tecAvatarPreview, setTecAvatarPreview] = useState("");
-  
-    const navigateTo = useNavigate();
 
-    const handleAvatar = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-        setTecAvatarPreview(reader.result);
-        setTecAvatar(file);
-    };
-  };
+    const navigateTo = useNavigate();
 
   const handleAddNewTecnico = async (e) => {
     e.preventDefault();
@@ -41,9 +29,9 @@ const AddNewtecnico = () => {
       formData.append("password", password);
       formData.append("sector", sector);
       formData.append("registration", registration);
-      formData.append("tecAvatar", tecAvatar);
+
       await axios
-        .post("http://localhost:4000/api/v1/user/tecnico/addnew", formData, {
+        .post("http://localhost:4000/api/v1/user/tecnico/addnewtecnico", formData, {
           withCredentials: true,
           headers: { "Content-Type": "multipart/form-data" },
         })
@@ -72,18 +60,9 @@ const AddNewtecnico = () => {
     <section className="page">
       <section className="container add-doctor-form">
         <img src="/logo.png" alt="logo" className="logo"/>
-        <h1 className="form-title">REGISTRE UM </h1>
+        <h1 className="form-title">REGISTRE UM NOVO TÉCNICO </h1>
         <form onSubmit={handleAddNewTecnico}>
           <div className="first-wrapper">
-            <div>
-              <img
-                src={
-                  tecAvatarPreview ? `${tecAvatarPreview}` : "/docHolder.jpg"
-                }
-                alt="Técnico Avatar"
-              />
-              <input type="file" onChange={handleAvatar} />
-            </div>
             <div>
               <input
                 type="text"
@@ -118,17 +97,16 @@ const AddNewtecnico = () => {
              <input
                 type="number"
                 placeholder="Matrícula"
-                value={password}
+                value={registration}
                 onChange={(e) => setRegistration(e.target.value)}
-            />
+               />
               <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              
-              <button type="submit">Registrar novo técnico</button>
+              <button type="submit">Registrar</button>
             </div>
           </div>
         </form>

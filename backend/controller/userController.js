@@ -99,24 +99,14 @@ export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
 
 
 export const addNewTecnico = catchAsyncErrors(async (req, res, next) => {
-    if (!req.files || Object.keys(req.files).length === 0) {
-        return next(new ErrorHandler("Imagem de perfil é necessária!", 400));
-    }
-    
-    const { tecAvatar } = req.files;
-    const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
-    
-    if (!allowedFormats.includes(tecAvatar.mimetype)) {
-        return next(new ErrorHandler("O formato do arquivo não é suportado!", 400));
-    }
-    
+
     const { firstName, 
             lastName, 
             email, 
             phone, 
             sector, 
             registration, 
-            password
+            password,
          } = req.body;
     
     if (!firstName || 
@@ -126,6 +116,7 @@ export const addNewTecnico = catchAsyncErrors(async (req, res, next) => {
         !sector || 
         !registration || 
         !password
+        
     ) {
         return next(new ErrorHandler("Por favor, preencha todo o formulário!", 400));
     }
@@ -135,12 +126,6 @@ export const addNewTecnico = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("Já existe um técnico com essa matrícula", 400));
     }
     
-    const cloudinaryResponse = await cloudinary.uploader.upload(tecAvatar.tempFilePath);
-    if (!cloudinaryResponse || cloudinaryResponse.error) {
-        console.error("Cloudinary Error:", cloudinaryResponse.error || "Erro desconhecido Cloudinary");
-        return next(new ErrorHandler("Houve uma falha ao fazer upload do arquivo", 500));
-    }
-    
     const tecnico = await User.create({
         firstName,
         lastName,
@@ -148,11 +133,7 @@ export const addNewTecnico = catchAsyncErrors(async (req, res, next) => {
         phone,
         sector,
         registration,
-        password,
-        tecAvatar: {
-            public_id: cloudinaryResponse.public_id,
-            url: cloudinaryResponse.secure_url
-        },
+        password
     });
     
     res.status(200).json({

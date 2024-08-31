@@ -4,39 +4,23 @@ import ErrorHandler from "./errorMiddleware.js";
 import jwt from "jsonwebtoken";
 
 export const isAdminAuthenticated = catchAsyncErrors(
-    async (req, res, next) => {
-      const token = req.cookies.adminToken;
-      if (!token) {
-        return next(
-          new ErrorHandler("User não autenticado para dashboard!", 400)
-        );
-      }
-      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      req.user = await User.findById(decoded.id);
-      if (req.user.role !== "Administrador") {
-        return next(
-          new ErrorHandler(`${req.user.role} não autorizado para esta funcionalidade!`, 403)
-        );
-      }
-      next();
+  async (req, res, next) => {
+    const token = req.cookies.adminToken;
+    if (!token) {
+      return next(
+        new ErrorHandler("Usuário não autenticado para o dashboard!", 400)
+      );
     }
-  );
-
-// mid do frontend 
-/* export const isTecnicoAuthenticated = catchAsyncErrors(async (req, res, next) => {
-        const token = req.cookies.tecnicoToken;
-        if (!token) {
-          return next(
-            new ErrorHandler("User não autenticado para dashboard!", 400)
-          );
-        }
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.user = await User.findById(decoded.id);
-    if (req.user.role !== "Tecnico") {
-        return next(new ErrorHandler("Não autorizado para estes recursos!", 403));
+    if (!["Administrador", "Técnico"].includes(req.user.role)) {
+      return next(
+        new ErrorHandler(`${req.user.role} não autorizado para esta funcionalidade!`, 403)
+      );
     }
     next();
-});*/
+  }
+);
 
 export const isUserPadraoAuthenticated = catchAsyncErrors(
   async (req, res, next) => {

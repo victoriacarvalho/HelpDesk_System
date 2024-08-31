@@ -7,7 +7,7 @@
   font-family: "Montserrat", sans-serif;
 }
 body {
-  background: #3939d9f2;
+  background: hsla(143, 64%, 25%, 0.949);
 }
 .container {
   padding: 0 100px;
