@@ -59,13 +59,13 @@ const AddNewAdmin = () => {
               <div>
                 <input
                   type="text"
-                  placeholder="First Name"
+                  placeholder="Primeiro nome"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
                 <input
                   type="text"
-                  placeholder="Last Name"
+                  placeholder="Segundo nome"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
@@ -107,7 +107,7 @@ const AddNewAdmin = () => {
                 />
               </div>
               <div style={{ justifyContent: "center", alignItems: "center" }}>
-                <button type="submit">ADDICIONAR</button>
+                <button type="submit">ADICIONAR</button>
               </div>
             </form>
           </section>

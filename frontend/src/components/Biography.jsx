@@ -6,7 +6,6 @@ const Biography = ({ title, imageUrl }) => {
       <div className="hero container">
         <div className="banner">
           <h1>{title}</h1>
-          <p><b>Ficou alguma informação? </b></p>
           <p>
           Se você quiser adicionar mais informações ou esclarecer algo para o técnico,
           por favor, envie uma mensagem com os detalhes adicionais. 

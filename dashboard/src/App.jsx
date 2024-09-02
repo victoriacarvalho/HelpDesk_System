@@ -16,6 +16,7 @@ import Sidebar from "./components/Sidebar";
 import AddNewAdmin from "./components/AddNewAdmin";
 import "./App.css";
 import ChamadoDetails from "./components/ChamadoDetails";
+import ChamadosFechados from "./components/ChamadosFechados";
 
 
 const App = () => {
@@ -52,6 +53,7 @@ const App = () => {
         <Route path="/messages" element={<Messages />} />
         <Route path="/tecnicos" element={<Tecnicos />} />
         <Route path="/chamadoDetails/:id" element={<ChamadoDetails/>}/>
+        <Route path="/chamadosFechados" element={<ChamadosFechados />} />
       </Routes>
       <ToastContainer position="top-center" />
     </Router>

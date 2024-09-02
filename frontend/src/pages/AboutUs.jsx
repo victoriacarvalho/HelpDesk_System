@@ -4,7 +4,7 @@ import MessageForm from "../components/MessageForm";
 const AboutUs = () => {
   return (
     <>
-      <Biography/>
+      <Biography title={"Ficou alguma informação?"}/>
       <MessageForm/> 
     </>
 

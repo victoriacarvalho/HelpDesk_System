@@ -8,6 +8,7 @@ const Dashboard = () => {
   const [chamados, setChamados] = useState([]);
   const [totalChamados, setTotalChamados] = useState(0);
   const [chamadosAbertos, setChamadosAbertos] = useState(0);
+  const [chamadosFechados, setChamadosFechados] = useState(0);
 
   useEffect(() => {
     const fetchChamados = async () => {
@@ -25,8 +26,15 @@ const Dashboard = () => {
         setTotalChamados(countResponse.data.count);
 
         // Contar chamados abertos
-        const abertosCount = data.chamados.filter(chamado => chamado.status === "Aberto").length;
+        const abertosCount = data.chamados.filter(
+          (chamado) => chamado.status === "Aberto"
+        ).length;
         setChamadosAbertos(abertosCount);
+
+        const fechadosCount = data.chamados.filter(
+          (chamado) => chamado.status === "Encerrado"
+        ).length;
+        setChamadosFechados(fechadosCount);
       } catch (error) {
         toast.error("Erro ao carregar os chamados");
         setChamados([]);
@@ -46,18 +54,20 @@ const Dashboard = () => {
       );
       setChamados((prevChamados) =>
         prevChamados.map((chamado) =>
-          chamado._id === chamadoId
-            ? { ...chamado, status }
-            : chamado
+          chamado._id === chamadoId ? { ...chamado, status } : chamado
         )
       );
       toast.success(data.message);
 
       // Atualizar contagem de chamados abertos
-      const abertosCount = chamados.filter(chamado => chamado.status === "Aberto").length;
+      const abertosCount = chamados.filter(
+        (chamado) => chamado.status === "Aberto"
+      ).length;
       setChamadosAbertos(abertosCount);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Erro ao atualizar o status");
+      toast.error(
+        error.response?.data?.message || "Erro ao atualizar o status"
+      );
     }
   };
 
@@ -67,20 +77,22 @@ const Dashboard = () => {
     return <Navigate to={"/login"} />;
   }
 
+  // Filtra os chamados para exibir apenas os que não estão encerrados
+  const chamadosNaoEncerrados = chamados.filter(
+    (chamado) => chamado.status !== "Encerrado"
+  );
+
   return (
     <section className="dashboard page">
       <div className="banner">
-        <div className="firstBox">
+        <div className="thirdBox">
           <div className="content">
-            <div>
-              <p>Olá,</p>
-              <h5>{admin && `${admin.firstName} ${admin.lastName}`}</h5>
-            </div>
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Facilis, nam molestias. Eaque molestiae ipsam commodi neque.
-              Assumenda repellendus necessitatibus itaque.
-            </p>
+            <p> Chamados Fechados</p>
+            {/* Adicionando o link para a página de chamados fechados */}
+            <h3 className="cardValue">{chamadosFechados}</h3>
+            <Link to="/chamadosFechados" className="closedChamadosLink">
+              Ver detalhes
+            </Link>
           </div>
         </div>
         <div className="secondBox">
@@ -104,8 +116,8 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {chamados.length > 0 ? (
-              chamados.map((chamado) => (
+            {chamadosNaoEncerrados.length > 0 ? (
+              chamadosNaoEncerrados.map((chamado) => (
                 <tr key={chamado._id}>
                   <td>
                     <Link to={`/chamadoDetails/${chamado._id}`}>
@@ -114,23 +126,37 @@ const Dashboard = () => {
                   </td>
                   <td>{chamado.chamado_date}</td>
                   <td>
-                    <select
-                      className={
-                        chamado.status === "Pendente"
-                          ? "value-pending"
-                          : chamado.status === "Aberto"
-                          ? "value-accepted"
-                          : "value-rejected"
-                      }
-                      value={chamado.status}
-                      onChange={(e) =>
-                        handleUpdateStatus(chamado._id, e.target.value)
-                      }
-                    >
-                      <option value="Pendente">Pendente</option>
-                      <option value="Aberto">Aberto</option>
-                      <option value="Encerrado">Encerrado</option>
-                    </select>
+                    {chamado.tecnico
+                      ? `${chamado.tecnico.firstName} ${chamado.tecnico.lastName}`
+                      : "Sem Técnico"}
+                  </td>
+                  <td>
+                    {chamado.status === "Encerrado" ? (
+                      <Link
+                        to={`/chamadoDetails/${chamado._id}`}
+                        className="status-link"
+                      >
+                        {chamado.status}
+                      </Link>
+                    ) : (
+                      <select
+                        className={
+                          chamado.status === "Pendente"
+                            ? "value-pending"
+                            : chamado.status === "Aberto"
+                            ? "value-accepted"
+                            : "value-rejected"
+                        }
+                        value={chamado.status}
+                        onChange={(e) =>
+                          handleUpdateStatus(chamado._id, e.target.value)
+                        }
+                      >
+                        <option value="Pendente">Pendente</option>
+                        <option value="Aberto">Aberto</option>
+                        <option value="Encerrado">Encerrado</option>
+                      </select>
+                    )}
                   </td>
                 </tr>
               ))
