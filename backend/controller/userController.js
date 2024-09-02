@@ -133,7 +133,8 @@ export const addNewTecnico = catchAsyncErrors(async (req, res, next) => {
         phone,
         sector,
         registration,
-        password
+        password,
+        role: "Tecnico",
     });
     
     res.status(200).json({

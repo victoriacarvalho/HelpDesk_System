@@ -39,6 +39,7 @@ const AddNewAdmin = () => {
               setEmail("");
               setPhone("");
               setSector("");
+              setPassword("");
               setRegistration("");
             });
         } catch (error) {

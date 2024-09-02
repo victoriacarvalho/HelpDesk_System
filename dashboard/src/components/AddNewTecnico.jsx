@@ -18,102 +18,97 @@ const AddNewtecnico = () => {
 
     const navigateTo = useNavigate();
 
-  const handleAddNewTecnico = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append("firstName", firstName);
-      formData.append("lastName", lastName);
-      formData.append("email", email);
-      formData.append("phone", phone);
-      formData.append("password", password);
-      formData.append("sector", sector);
-      formData.append("registration", registration);
+   const handleAddNewTecnico = async (e) => {
+      e.preventDefault();
+      try {
+        await axios
+          .post(
+            "http://localhost:4000/api/v1/user/tecnico/addnewtecnico", 
+            { firstName, lastName, email, phone, password, sector, registration },
+            { 
+              withCredentials: true,
+              headers: { "Content-Type": "multipart/form-data" },
+          }
+        )
+          .then((res) => {
+            toast.success(res.data.message);
+            setIsAuthenticated(true);
+            navigateTo("/");
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPhone("");
+            setRegistration("");
+            setSector("");
+            setPassword("");
+          });
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    };
 
-      await axios
-        .post("http://localhost:4000/api/v1/user/tecnico/addnewtecnico", formData, {
-          withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => {
-          toast.success(res.data.message);
-          setIsAuthenticated(true);
-          navigateTo("/");
-          setFirstName("");
-          setLastName("");
-          setEmail("");
-          setPhone("");
-          setRegistration("");
-          setSector("");
-          setPassword("");
-        });
-    } catch (error) {
-      toast.error(error.response.data.message);
+    if (!isAuthenticated) {
+      return <Navigate to={"/login"} />;
     }
+
+    return (
+      <section className="page">
+        <section className="container add-doctor-form">
+          <img src="/logo.png" alt="logo" className="logo"/>
+          <h1 className="form-title">REGISTRE UM NOVO TÉCNICO </h1>
+          <form onSubmit={handleAddNewTecnico}>
+            <div className="first-wrapper">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Primeiro nome"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Segundo nome"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="E-mail"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  type="number"
+                  placeholder="Celular"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Setor"
+                  value={sector}
+                  onChange={(e) => setSector(e.target.value)}
+                />
+              <input
+                  type="number"
+                  placeholder="Matrícula"
+                  value={registration}
+                  onChange={(e) => setRegistration(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder="Senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button type="submit">Registrar</button>
+              </div>
+            </div>
+          </form>
+        </section>
+      </section>
+    );
   };
 
-  if (!isAuthenticated) {
-    return <Navigate to={"/login"} />;
-  }
-
-  return (
-    <section className="page">
-      <section className="container add-doctor-form">
-        <img src="/logo.png" alt="logo" className="logo"/>
-        <h1 className="form-title">REGISTRE UM NOVO TÉCNICO </h1>
-        <form onSubmit={handleAddNewTecnico}>
-          <div className="first-wrapper">
-            <div>
-              <input
-                type="text"
-                placeholder="Primeiro nome"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Segundo nome"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="E-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                type="number"
-                placeholder="Celular"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Setor"
-                value={sector}
-                onChange={(e) => setSector(e.target.value)}
-              />
-             <input
-                type="number"
-                placeholder="Matrícula"
-                value={registration}
-                onChange={(e) => setRegistration(e.target.value)}
-               />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button type="submit">Registrar</button>
-            </div>
-          </div>
-        </form>
-      </section>
-    </section>
-  );
-};
-
-export default AddNewtecnico;
+  export default AddNewtecnico;
 
