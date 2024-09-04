@@ -2,7 +2,7 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js";
 import { User } from "../models/userSchema.js";
 import { generateToken } from "../utils/jwtToken.js";
-import cloudinary from "cloudinary";
+
 
 export const userPadraoRegister = catchAsyncErrors(async (req, res, next) => {
     const { firstName, lastName, email, phone, sector, password, registration, role} = req.body;
@@ -62,41 +62,47 @@ export const login = catchAsyncErrors(async (req, res, next) => {
 
 export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
     const { firstName, lastName, email, phone, password, sector, registration } = req.body;
-    
-    if (!firstName ||
-        !lastName || 
-        !email || 
-        !phone || 
-        !sector || 
-        !password || 
-        !registration
-    ) {
+
+    if (!firstName || !lastName || !email || !phone || !sector || !password || !registration) {
         return next(new ErrorHandler("Por favor, preencha todo o formulário!", 400));
     }
-    
-    const isRegistered = await User.findOne({ registration });
-    if (isRegistered) {
-      return next(new ErrorHandler("Já existe um administrador com esta matrícula!", 400));
-    }
-    
-    const admin = await User.create({
-        firstName,
-        lastName,
-        email,
-        phone,
-        sector,
-        password,
-        registration,
-        role: "Administrador",
-    });
-    
-    res.status(200).json({
-        success: true,
-        message: "Novo administrador registrado!",
-        admin,
-    });
-});
 
+    // Verifica se o usuário já está cadastrado
+    let user = await User.findOne({ registration });
+
+    if (user) {
+        // Se o usuário é um técnico, atualize seu papel para "Administrador"
+        if (user.role === "Tecnico") {
+            user.role = "Administrador";
+            await user.save();
+            return res.status(200).json({
+                success: true,
+                message: "Usuário atualizado para administrador!",
+                user,
+            });
+        } else {
+            return next(new ErrorHandler("O usuário não é um técnico e não pode ser promovido a administrador.", 400));
+        }
+    } else {
+        // Cria um novo usuário
+        user = await User.create({
+            firstName,
+            lastName,
+            email,
+            phone,
+            sector,
+            password,
+            registration,
+            role: "Administrador", // Define o papel como Administrador
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Novo administrador registrado!",
+            user,
+        });
+    }
+});
 
 export const addNewTecnico = catchAsyncErrors(async (req, res, next) => {
 
@@ -134,7 +140,7 @@ export const addNewTecnico = catchAsyncErrors(async (req, res, next) => {
         sector,
         registration,
         password,
-        role: "Tecnico",
+        role: "Tecnico"
     });
     
     res.status(200).json({
@@ -153,6 +159,13 @@ export const getAllTecnicos = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+export const getAllAdmin = catchAsyncErrors(async (req, res, next) => {
+    const tecnicos = await User.find({ role: "Administrador" });
+    res.status(200).json({
+        success: true,
+        tecnicos,
+    });
+});
 
 export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
     const user = req.user;
@@ -187,3 +200,49 @@ export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
         message: "Usuário fez logout com sucesso!.",
       });
   });
+
+  const getTechniciansAndAssignCall = async (chamadoData) => {
+    try {
+        // Obter todos os técnicos
+        const response = await axios.get('http://localhost:4000/api/v1/tecnico/getAll');
+        const tecnicos = response.data.tecnicos;
+
+        if (tecnicos.length === 0) {
+            throw new Error('Nenhum técnico disponível para atribuir o chamado.');
+        }
+
+        // Encontrar o técnico com o menor número de chamados ativos
+        let technicianWithFewestCalls;
+        let fewestCallsCount = Infinity;
+
+        for (const tecnico of tecnicos) {
+            // Contar os chamados ativos para este técnico
+            const activeCallsCount = await Chamado.countDocuments({
+                tecnico: tecnico._id,
+                status: { $ne: 'Encerrado' },
+            });
+
+            if (activeCallsCount < fewestCallsCount) {
+                fewestCallsCount = activeCallsCount;
+                technicianWithFewestCalls = tecnico;
+            }
+        }
+
+        if (!technicianWithFewestCalls) {
+            throw new Error('Não foi possível determinar o técnico com menos chamados.');
+        }
+
+        // Criar um novo chamado e atribuir ao técnico
+        const novoChamado = await Chamado.create({
+            ...chamadoData,
+            tecnico: technicianWithFewestCalls._id,
+            status: 'Pendente',
+        });
+
+        return novoChamado;
+    } catch (error) {
+        throw new Error(`Erro ao atribuir o chamado: ${error.message}`);
+    }
+};
+
+export { getTechniciansAndAssignCall };

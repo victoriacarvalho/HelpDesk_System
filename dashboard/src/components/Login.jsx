@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import axios from "axios";
+import { Input, Button, message, Card } from "antd";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,7 +28,7 @@ const Login = () => {
           }
         )
         .then((res) => {
-          toast.success(res.data.message);
+          message.success(res.data.message);
           setIsAuthenticated(true);
           navigateTo("/");
           setEmail("");
@@ -35,7 +36,7 @@ const Login = () => {
           setRegistration("");
         });
     } catch (error) {
-      toast.error(error.response.data.message);
+      message.error(error.response.data.message);
     }
   };
 
@@ -44,36 +45,47 @@ const Login = () => {
   }
 
   return (
-    <>
-      <section className="container form-component">
-        <img src="/logo.png" alt="logo" className="logo" />
-        <h1 className="form-title">BEM VINDO AO TICKET+</h1>
-        <p>Somente administradores têm permissão para acessar esses recursos!</p>
+    <div
+      className="login-container"
+      style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}
+    >
+      <Card
+        title="BEM VINDO AO TICKET+"
+        style={{ width: 400, padding: '20px' }} // Aumentando a largura e o preenchimento do card
+      >
+        <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+          <img src="/logo.png" alt="logo" style={{ width: "120px", height: "auto" }} />
+        </div>
+        <p style={{ textAlign: "center" }}>
+          Somente administradores têm permissão para acessar esses recursos!
+        </p>
         <form onSubmit={handleLogin}>
-          <input
+          <Input
             type="text"
             placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={{ marginBottom: "1rem" }}
           />
-          <input
-            type="password"
+          <Input.Password
             placeholder="Senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            style={{ marginBottom: "1rem" }}
           />
-          <input
+          <Input
             type="text"
             placeholder="Matrícula"
             value={registration}
             onChange={(e) => setRegistration(e.target.value)}
+            style={{ marginBottom: "1rem" }}
           />
-          <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit">Login</button>
-          </div>
+          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+            Login
+          </Button>
         </form>
-      </section>
-    </>
+      </Card>
+    </div>
   );
 };
 

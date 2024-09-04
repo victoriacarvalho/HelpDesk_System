@@ -7,12 +7,11 @@ import Dashboard from "./components/Dashboard";
 import Login from "./components/Login";
 import AddNewTecnico from "./components/AddNewTecnico";
 import Messages from "./components/Messages";
-import Tecnicos from "./components/Tecnicos";
+import Equipe from "./components/Equipe";
 import { Context } from "./main";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Sidebar from "./components/Sidebar";
 import AddNewAdmin from "./components/AddNewAdmin";
 import "./App.css";
 import ChamadoDetails from "./components/ChamadoDetails";
@@ -44,14 +43,13 @@ const App = () => {
 
   return (
     <Router>
-      <Sidebar />
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/tecnico/addnew" element={<AddNewTecnico />} />
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
         <Route path="/messages" element={<Messages />} />
-        <Route path="/tecnicos" element={<Tecnicos />} />
+        <Route path="/equipe" element={<Equipe />} />
         <Route path="/chamadoDetails/:id" element={<ChamadoDetails/>}/>
         <Route path="/chamadosFechados" element={<ChamadosFechados />} />
       </Routes>

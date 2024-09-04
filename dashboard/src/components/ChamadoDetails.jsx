@@ -1,9 +1,29 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState, useEffect } from "react";
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Context } from "../main";
+import { Navigate,useParams, Link } from 'react-router-dom';
+import { Card, Spin, Alert, Typography, Layout, Menu, Breadcrumb, message } from 'antd';
+import { PieChartOutlined, DesktopOutlined, UserOutlined, TeamOutlined, FileOutlined } from '@ant-design/icons';
+
+const { Content: AntdContent, Sider, Header } = Layout;
+const { Title, Text } = Typography;
 
 const ChamadoDetails = () => {
+  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+
+  const handleLogout = async () => {
+    try {
+      const res = await axios.get("http://localhost:4000/api/v1/user/logout/admin", {
+        withCredentials: true,
+      });
+      message.success(res.data.message);
+      setIsAuthenticated(false);
+    } catch (err) {
+      message.error(err.response?.data?.message || "Erro ao sair");
+    }
+  };
+
   const { id } = useParams();
   const [chamado, setChamado] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,54 +34,87 @@ const ChamadoDetails = () => {
       try {
         const { data } = await axios.get(`http://localhost:4000/api/v1/chamado/getDetails/${id}`, { withCredentials: true });
         setChamado(data.chamado);
-        setLoading(false);
       } catch (err) {
         setError('Erro ao carregar detalhes do chamado.');
+      } finally {
         setLoading(false);
       }
     };
     fetchChamado();
   }, [id]);
 
-  if (loading) return <div>Carregando...</div>;
-  if (error) return <div>{error}</div>;
+  if (!isAuthenticated) {
+    return <Navigate to={"/login"} />;
+  }
+
+
+  const menuItems = [
+    { label: <Link to="/">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
+    { label: <Link to="/equipe">Equipe</Link>, key: '2', icon: <DesktopOutlined /> },
+    { label: 'Adicionar', key: 'sub1', icon: <UserOutlined />, children: [
+      { label: <Link to="/admin/addnew">Administrador</Link>, key: '3' },
+      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '4' },
+    ]},
+    { label: <Link to="/messages">Mensagens</Link>, key: '5', icon: <TeamOutlined /> },
+    { label: <span onClick={handleLogout}>Logout</span>, key: '6', icon: <FileOutlined /> },
+  ];
+  
+  if (loading) return <Spin size="large" tip="Carregando..." />;
 
   return (
-    <section className="page messages">
-      <h2>Detalhes do Chamado</h2>
-      {chamado ? (
-        <div className="banner">
-          <div className="card">
-          <div className="details">
-            <p><strong>Título:</strong> {chamado.title}</p>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider collapsible style={{ backgroundColor: '#1c4529' }}>
+        <div className="demo-logo-vertical" />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={menuItems} style={{ backgroundColor: '#1c4529' }}/>
+      </Sider>
+      <Layout>
+        <Header style={{ padding: 0, background: '#fff' }} />
+        <AntdContent style={{ margin: '0 16px' }}>
+          <Breadcrumb style={{ margin: '16px 0' }}>
+            <Breadcrumb.Item><a href="/">Dashboard</a></Breadcrumb.Item>
+            <Breadcrumb.Item>Detalhes do Chamado</Breadcrumb.Item>
+          </Breadcrumb>
+          <div style={{ padding: 24, minHeight: 360, background: '#fff', borderRadius: 8 }}>
+            {error && <Alert message={error} type="error" showIcon style={{ marginBottom: '20px' }} />}
+            {chamado ? (
+              <Card
+                title={<Title level={4}>Detalhes do Chamado</Title>}
+                bordered={false}
+                hoverable
+                style={{ width: '100%', maxWidth: '800px', margin: '0 auto', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}
+              >
+                <div style={{ marginBottom: '16px' }}>
+                  <Text strong>Título:</Text> <Text>{chamado.title}</Text>
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <Text strong>Descrição:</Text> <Text>{chamado.description}</Text>
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <Text strong>Requerente:</Text> <Text>{`${chamado.firstName} ${chamado.lastName}`}</Text>
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <Text strong>Email:</Text> <Text>{chamado.email}</Text>
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <Text strong>Telefone:</Text> <Text>{chamado.phone}</Text>
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <Text strong>Setor:</Text> <Text>{chamado.sector}</Text>
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <Text strong>Status:</Text> <Text>{chamado.status}</Text>
+                </div>
+                <div>
+                  <Text strong>Data do Chamado:</Text> <Text>{new Date(chamado.chamado_date).toLocaleDateString()}</Text>
+                </div>
+              </Card>
+            ) : (
+              <Alert message="Chamado não encontrado." type="warning" showIcon />
+            )}
           </div>
-          <div className="detail-item">
-            <p><strong>Descrição:</strong> {chamado.description}</p>
-          </div>
-          <div className="detail-item">
-            <p><strong>Requerente:</strong> {`${chamado.firstName} ${chamado.lastName}`}</p>
-          </div>
-          <div className="detail-item">
-            <p><strong>Email:</strong> {chamado.email}</p>
-          </div>
-          <div className="detail-item">
-            <p><strong>Telefone:</strong> {chamado.phone}</p>
-          </div>
-          <div className="detail-item">
-            <p><strong>Setor:</strong> {chamado.sector}</p>
-          </div>
-          <div className="detail-item">
-            <p><strong>Status:</strong> {chamado.status}</p>
-          </div>
-          <div className="detail-item">
-            <p><strong>Data do Chamado:</strong> {new Date(chamado.chamado_date).toLocaleDateString()}</p>
-          </div>
-        </div>
-        </div>
-      ) : (
-        <div>Chamado não encontrado.</div>
-      )}
-    </section>
+        </AntdContent>
+      </Layout>
+    </Layout>
   );
 };
 
