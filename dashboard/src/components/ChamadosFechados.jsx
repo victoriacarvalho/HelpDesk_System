@@ -96,7 +96,10 @@ const ClosedChamados = () => {
         <div className="logo" />
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" style={{ backgroundColor: '#1c4529' }}>
           <Menu.Item key="1" icon={<PieChartOutlined />}><Link to="/">Dashboard</Link></Menu.Item>
-          <Menu.Item key="2" icon={<DesktopOutlined />}><Link to="/equipe">Equipe</Link></Menu.Item>
+          <Menu.SubMenu key="sub2" icon={<DesktopOutlined />}title="Consultar">
+             <Menu.Item><Link to="/tecnico">Técnico</Link></Menu.Item>
+             <Menu.Item><Link to="/admins">Administrador</Link></Menu.Item>
+            </Menu.SubMenu>
           <Menu.SubMenu key="sub1" icon={<UserOutlined />} title="Adicionar">
             <Menu.Item key="3"><Link to="/admin/addnew">Administrador</Link></Menu.Item>
             <Menu.Item key="4"><Link to="/tecnico/addnew">Técnico</Link></Menu.Item>
@@ -126,6 +129,7 @@ const ClosedChamados = () => {
               dataSource={chamados}
               rowKey="_id"
               pagination={{ pageSize: 5 }}
+              style={{ marginBottom: 24 , boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '8px' }}
             />
           </div>
         </Content>

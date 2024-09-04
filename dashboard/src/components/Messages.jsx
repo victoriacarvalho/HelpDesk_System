@@ -14,6 +14,7 @@ const Messages = () => {
   const [messages, setMessages] = useState([]);
  
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -48,10 +49,13 @@ const Messages = () => {
 
   const menuItems = [
     { label: <Link to="/">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
-    { label: <Link to="/equipe">Equipe</Link>, key: '2', icon: <DesktopOutlined /> },
+    { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
+      { label: <Link to="/tecnico">Técnico</Link>, key: '2'},
+      { label: <Link to="/admins">Administradores</Link>, key: '3' },
+    ]},
     { label: 'Adicionar', key: 'sub1', icon: <UserOutlined />, children: [
-      { label: <Link to="/admin/addnew">Administrador</Link>, key: '3' },
-      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '4' },
+      { label: <Link to="/admin/addnew">Administrador</Link>, key: '4' },
+      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '5' },
     ]},
     { label: <Link to="/messages">Mensagens</Link>, key: '5', icon: <TeamOutlined /> },
     { label: <span onClick={handleLogout}>Logout</span>, key: '6', icon: <FileOutlined /> },
@@ -59,18 +63,39 @@ const Messages = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible style={{ backgroundColor: '#1c4529' }}>
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={['5']} mode="inline" items={menuItems}style={{ backgroundColor: '#1c4529' }} />
+      <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+          style={{
+            background: 'linear-gradient(180deg, #004d40 0%, #00796b 100%)',
+            borderRight: '1px solid #004d40',
+            boxShadow: '2px 0 8px rgba(0, 0, 0, 0.2)',
+            borderRadius: '0 10px 10px 0',
+          }}
+        >
+        <div className="demo-logo-vertical" style={{ padding: '16px' }}>
+          {/* Logo or other content */}
+        </div>
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={['1']}
+          mode="inline"
+          items={menuItems}
+          style={{
+            background: 'transparent',
+            borderRight: 'none',
+          }}
+        />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: '#fff' }} />
+        <Header style={{ padding: 0, background: '#fff', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }} />
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item><a href="/">Dashboard</a></Breadcrumb.Item>
             <Breadcrumb.Item>Mensagens</Breadcrumb.Item>
           </Breadcrumb>
-          <div style={{ padding: 24, minHeight: 360, background: '#fff', borderRadius: 8 }}>
+          <div style={{ padding: 24, minHeight: 360, background: '#f9f9f9', borderRadius: 8 }}>
             <Title level={2} style={{ marginBottom: 20 }}>
               Mensagens
             </Title>
@@ -80,10 +105,15 @@ const Messages = () => {
                   <Card
                     key={msg._id}
                     bordered={false}
-                    style={{ marginBottom: 16 }}
+                    style={{
+                      marginBottom: 16,
+                      borderRadius: 8,
+                      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                      background: '#fff',
+                    }}
                     title={
                       <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <MessageOutlined style={{ fontSize: 24, marginRight: 16 }} />
+                        <MessageOutlined style={{ fontSize: 24, marginRight: 16, color: '#00796b' }} />
                         <strong>{`Mensagem de ${msg.firstName} ${msg.lastName}`}</strong>
                       </div>
                     }

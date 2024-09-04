@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Navigate, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
@@ -14,6 +14,7 @@ const AddNewTecnico = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigateTo = useNavigate();
 
+  const [collapsed, setCollapsed] = useState(false);
   const [form] = Form.useForm();
 
   const handleAddNewTecnico = async (values) => {
@@ -53,10 +54,13 @@ const AddNewTecnico = () => {
 
   const menuItems = [
     { label: <Link to="/">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
-    { label: <Link to="/equipe">Equipe</Link>, key: '2', icon: <DesktopOutlined /> },
+    { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
+      { label: <Link to="/tecnico">Técnico</Link>, key: '2' },
+      { label: <Link to="/admins">Administradores</Link>, key: '3' },
+    ]},
     { label: 'Adicionar', key: 'sub1', icon: <UserOutlined />, children: [
-      { label: <Link to="/admin/addnew">Administrador</Link>, key: '3' },
-      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '4' },
+      { label: <Link to="/admin/addnew">Administrador</Link>, key: '4' },
+      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '5' },
     ]},
     { label: <Link to="/messages">Mensagens</Link>, key: '5', icon: <TeamOutlined /> },
     { label: <span onClick={handleLogout}>Logout</span>, key: '6', icon: <FileOutlined /> },
@@ -64,9 +68,30 @@ const AddNewTecnico = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible style={{ backgroundColor: '#1c4529' }}>
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={['4']} mode="inline" items={menuItems} style={{ backgroundColor: '#1c4529' }} />
+      <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+          style={{
+            background: 'linear-gradient(180deg, #004d40 0%, #00796b 100%)',
+            borderRight: '1px solid #004d40',
+            boxShadow: '2px 0 8px rgba(0, 0, 0, 0.2)',
+            borderRadius: '0 10px 10px 0',
+          }}
+        >
+        <div className="demo-logo-vertical" style={{ padding: '16px' }}>
+          {/* Logo or other content */}
+        </div>
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={['1']}
+          mode="inline"
+          items={menuItems}
+          style={{
+            background: 'transparent',
+            borderRight: 'none',
+          }}
+        />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: '#fff' }} />

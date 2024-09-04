@@ -110,9 +110,6 @@ const Dashboard = () => {
   };
   
   
-  // Adicione o estado para armazenar as métricas semanais
-
-  
   const handleMenuClick = async (e) => {
     if (e.key === 'Encerrado') {
       setSelectedRecord(e.record);
@@ -200,10 +197,13 @@ const Dashboard = () => {
 
   const menuItems = [
     { label: <Link to="/">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
-    { label: <Link to="/equipe">Equipe</Link>, key: '2', icon: <DesktopOutlined /> },
+    { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
+      { label: <Link to="/tecnico">Técnico</Link>, key: '2'},
+      { label: <Link to="/admins">Administradores</Link>, key: '3' },
+    ]},
     { label: 'Adicionar', key: 'sub1', icon: <UserOutlined />, children: [
-      { label: <Link to="/admin/addnew">Administrador</Link>, key: '3' },
-      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '4' },
+      { label: <Link to="/admin/addnew">Administrador</Link>, key: '4' },
+      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '5' },
     ]},
     { label: <Link to="/messages">Mensagens</Link>, key: '5', icon: <TeamOutlined /> },
     { label: <span onClick={handleLogout}>Logout</span>, key: '6', icon: <FileOutlined /> },
@@ -211,9 +211,30 @@ const Dashboard = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }} >
-      <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed} style={{ backgroundColor: '#1c4529' }} >
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={menuItems} style={{ backgroundColor: '#1c4529' }}/>
+      <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+          style={{
+            background: 'linear-gradient(180deg, #004d40 0%, #00796b 100%)',
+            borderRight: '1px solid #004d40',
+            boxShadow: '2px 0 8px rgba(0, 0, 0, 0.2)',
+            borderRadius: '0 10px 10px 0',
+          }}
+        >
+        <div className="demo-logo-vertical" style={{ padding: '16px' }}>
+          {/* Logo or other content */}
+        </div>
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={['1']}
+          mode="inline"
+          items={menuItems}
+          style={{
+            background: 'transparent',
+            borderRight: 'none',
+          }}
+        />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -226,92 +247,117 @@ const Dashboard = () => {
           </Breadcrumb>
           <div style={{ padding: 24, minHeight: 360, background: '#fff', borderRadius: 8 }}>
             <Row gutter={16}>
-              <Col span={8}>
-                <Card style={{ height: '150px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <p>Chamados Fechados</p>
-                  <h3>{chamadosFechados}</h3>
-                  <Link to="/chamadosFechados">Ver detalhes</Link>
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card style={{ height: '150px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <p>Total de Chamados</p>
-                  <h3>{totalChamados}</h3>
-                </Card>
-              </Col>
-              <Col span={8}>
-                <Card style={{ height: '150px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                  <p>Chamados Abertos</p>
-                  <h3>{chamadosAbertos}</h3>
-                </Card>
-              </Col>
+            <Col span={8}>
+            <Card style={{ height: '140px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '8px', marginBottom: '24px' }}>
+              <p><h3>Chamados Fechados</h3></p>
+              <h2 style={{ margin: 0 }}>{totalChamados}</h2>
+              <Link to="/chamadosFechados">Ver detalhes</Link>
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card style={{ height: '140px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '8px', marginBottom: '24px' }}>
+              <p><h3>Total de Chamados</h3></p>
+              <h2 style={{ margin: 0 }}>{totalChamados}</h2>
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card style={{ height: '140px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '8px', marginBottom: '24px' }}>
+              <p><h3>Chamados Abertos</h3></p>
+              <h3>{chamadosAbertos}</h3>
+            </Card>
+          </Col>
             </Row>
             <div style={{ marginTop: 24 }}>
-              <h5>Chamados</h5>
+              <h3>Chamados</h3>
               <Table
-                columns={[
-                  {
-                    title: 'Requerente',
-                    dataIndex: 'requerente',
-                    key: 'requerente',
-                    render: (_, { firstName, lastName, _id }) => (
-                      <Link to={`/chamadoDetails/${_id}`}>
-                        {`${firstName} ${lastName}`}
-                      </Link>
-                    ),
-                  },
-                  {
-                    title: 'Data',
-                    dataIndex: 'chamado_date',
-                    key: 'chamado_date',
-                  },
-                  {
-                    title: 'Técnico',
-                    dataIndex: 'tecnico',
-                    key: 'tecnico',
-                    render: (_, { tecnico }) => (
-                      tecnico
-                        ? `${tecnico.firstName} ${tecnico.lastName}`
-                        : "Sem Técnico"
-                    ),
-                  },
-                  {
-                    title: 'Status',
-                    dataIndex: 'status',
-                    key: 'status',
-                    render: (status, record) => <DropdownButton record={record} />,
-                  },
-                ]}
-                dataSource={chamadosNaoEncerrados}
-                rowKey="_id"
-              />
+              style={{ 
+                marginBottom: 24, 
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
+                borderRadius: '8px',
+                border: '1px solid #e8e8e8',  // Adiciona borda ao redor da tabela
+                overflow: 'hidden'  // Para garantir que o border-radius seja aplicado corretamente
+              }}
+              columns={[
+                {
+                  title: 'Requerente',
+                  dataIndex: 'requerente',
+                  key: 'requerente',
+                  render: (_, { firstName, lastName, _id }) => (
+                    <Link to={`/chamadoDetails/${_id}`}>
+                      {`${firstName} ${lastName}`}
+                    </Link>
+                  ),
+                },
+                {
+                  title: 'Data',
+                  dataIndex: 'chamado_date',
+                  key: 'chamado_date',
+                },
+                {
+                  title: 'Status',
+                  dataIndex: 'status',
+                  key: 'status',
+                  render: (status, record) => <DropdownButton record={record} />,
+                },
+              ]}
+              dataSource={chamadosNaoEncerrados}
+              rowKey="_id"
+              pagination={false}  // Remove a paginação se não for necessária
+              bordered
+              size="middle"  // Ajusta o tamanho das células
+              rowClassName="custom-table-row"  // Adiciona uma classe personalizada para as linhas
+            />
             </div>
             <div style={{ marginTop: 24 }}>
-          <h5>Métricas</h5>
+          <h3>Métricas</h3>
           <Row gutter={16}>
             <Col span={12}>
-              <Card title="Métricas Mensais" bordered={false}>
-                <LineChart width={600} height={300} data={monthlyMetrics}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="monthYear" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="count" stroke="#8884d8" />
-                </LineChart>
-              </Card>
+            <Card title="Métricas Mensais" bordered={false} >
+            <LineChart width={600} height={300} data={monthlyMetrics}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+              <XAxis dataKey="monthYear" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip contentStyle={{ backgroundColor: '#fff', borderColor: '#ddd' }} />
+              <Legend />
+              <Line 
+                type="monotone" 
+                dataKey="count" 
+                stroke="#007bff" 
+                strokeWidth={3} 
+                dot={{ stroke: '#007bff', strokeWidth: 2, r: 4 }}
+                activeDot={{ stroke: '#0056b3', strokeWidth: 2, r: 6 }}
+              >
+                <defs>
+                  <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#007bff" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#007bff" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+              </Line>
+            </LineChart>
+          </Card>
             </Col>
             <Col span={12}>
-              <Card title="Métricas Semanais" bordered={false}>
-                <BarChart width={600} height={300} data={weeklyMetrics}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="weekYear" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="count" fill="#82ca9d" />
-                </BarChart>
-              </Card>
+            <Card title="Métricas Semanais" bordered={false}>
+            <BarChart width={600} height={300} data={weeklyMetrics}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+              <XAxis dataKey="weekYear" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip contentStyle={{ backgroundColor: '#fff', borderColor: '#ddd' }} />
+              <Legend />
+              <Bar 
+                dataKey="count" 
+                fill="url(#colorCountBar)" 
+                barSize={30}
+              />
+              <defs>
+                <linearGradient id="colorCountBar" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+            </BarChart>
+          </Card>
             </Col>
           </Row>
         </div>

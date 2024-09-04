@@ -12,7 +12,6 @@ const Login = () => {
   const [registration, setRegistration] = useState("");
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-
   const navigateTo = useNavigate();
 
   const handleLogin = async (e) => {
@@ -47,16 +46,30 @@ const Login = () => {
   return (
     <div
       className="login-container"
-      style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        background: "linear-gradient(180deg, #004d40 0%, #00796b 100%)", 
+        padding: "0 20px",
+        boxSizing: "border-box",
+      }}
     >
       <Card
         title="BEM VINDO AO TICKET+"
-        style={{ width: 400, padding: '20px' }} // Aumentando a largura e o preenchimento do card
+        style={{
+          width: 400,
+          padding: '20px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          backgroundColor: '#fff',
+        }}
       >
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-          <img src="/logo.png" alt="logo" style={{ width: "120px", height: "auto" }} />
+          <img src="/logo.png" alt="logo" style={{ width: "180px", height: "auto" }} />
         </div>
-        <p style={{ textAlign: "center" }}>
+        <p style={{ textAlign: "center", color: "#333" }}>
           Somente administradores têm permissão para acessar esses recursos!
         </p>
         <form onSubmit={handleLogin}>
@@ -65,22 +78,43 @@ const Login = () => {
             placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ marginBottom: "1rem" }}
+            style={{
+              marginBottom: "1rem",
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            }}
           />
           <Input.Password
             placeholder="Senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{ marginBottom: "1rem" }}
+            style={{
+              marginBottom: "1rem",
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            }}
           />
           <Input
             type="text"
             placeholder="Matrícula"
             value={registration}
             onChange={(e) => setRegistration(e.target.value)}
-            style={{ marginBottom: "1rem" }}
+            style={{
+              marginBottom: "1rem",
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            }}
           />
-          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{
+              width: "100%",
+              borderRadius: '8px',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              backgroundColor:"linear-gradient(180deg, #004d40 0%, #00796b 100%)",
+            }}
+          >
             Login
           </Button>
         </form>
