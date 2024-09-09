@@ -1,12 +1,8 @@
 {
-  "homepage": "https://victoriacarvalho.github.io/HelpDesk_System/",
-  "name": "dashboard",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run dev",
-    "deploy": "gh-pages -d build"
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",

@@ -17,8 +17,6 @@ import AddNewAdmin from "./components/AddNewAdmin";
 import "./App.css";
 import ChamadoDetails from "./components/ChamadoDetails";
 import ChamadosFechados from "./components/ChamadosFechados";
-import { MdAdminPanelSettings } from "react-icons/md";
-
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =

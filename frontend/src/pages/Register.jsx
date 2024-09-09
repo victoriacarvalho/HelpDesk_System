@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
@@ -111,7 +112,7 @@ const Register = () => {
           </div>
             <p style={{ marginBottom: 0 }}>Já é registrado?</p>
             <Link
-              to={"/signin"}
+              to={"/login"}
               style={{ textDecoration: "none", color: "#271776ca" }}
             >
               Faça login
