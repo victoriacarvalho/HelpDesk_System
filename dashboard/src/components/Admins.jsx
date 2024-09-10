@@ -64,22 +64,22 @@ const Admins = () => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={setCollapsed}
-          style={{
-            background: 'linear-gradient(180deg, #004d40 0%, #00796b 100%)',
+            collapsible
+            collapsed={collapsed}
+            onCollapse={setCollapsed}
+            style={{
+            background: "linear-gradient(180deg, #004d40 0%, #a5d6a7 100%)",
             borderRight: '1px solid #004d40',
             boxShadow: '2px 0 8px rgba(0, 0, 0, 0.2)',
             borderRadius: '0 10px 10px 0',
-          }}
-        >
-        <div className="demo-logo-vertical" style={{ padding: '16px' }}>
-          {/* Logo or other content */}
+            }}
+      >
+        <div className="demo-logo-vertical" style={{ padding: '16px', textAlign: 'center' }}>
+          <img src="/logo.png" alt="Logo" style={{ height: 120 }} />
         </div>
         <Menu
           theme="dark"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['3']}
           mode="inline"
           items={menuItems}
           style={{

@@ -1,21 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 
-.custom-sider {
-  background-color: #004E41; 
-}
-
 .custom-table-row:nth-child(odd) {
   background-color: #ffffff; 
 }
 
-.custom-table-row:hover {
-  background-color: #ffffff; 
-}
-
-body {
-  background: #004E41; /* Cor de fundo verde padrão */
-}
 
 .ant-table-cell {
   font-size: 14px; 
@@ -25,4 +14,95 @@ body {
 .ant-table-header {
   background-color: #fafafa;  
   font-weight: bold;
+}
+
+.custom-table-row:hover {
+  background-color: #f5f5f5;
+}
+
+.ant-table-thead > tr > th {
+  background: #00796b;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.ant-table-tbody > tr > td {
+  color: #333;
+}
+
+.ant-card {
+  border-radius: 12px;
+}
+
+.ant-card-head {
+  background: #004d40;
+  color: #ffffff;
+}
+
+/* Estiliza o trigger do Sider */
+.ant-layout-sider-trigger {
+  background: linear-gradient(180deg, #a5d6a7 0%, #004d40 100%) !important; /* Gradiente invertido */
+  border: none;
+  border-radius: 4px; /* Ajuste o border-radius para um formato mais elegante */
+  width: 32px; /* Ajuste o tamanho do trigger */
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, box-shadow 0.3s;
+  cursor: pointer; /* Adiciona um cursor pointer para indicar que é clicável */
+}
+
+/* Ajusta o ícone dentro do trigger */
+.ant-layout-sider-trigger .anticon {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+/* Efeito ao passar o mouse sobre o trigger */
+.ant-layout-sider-trigger:hover {
+  background: linear-gradient(180deg, #a5d6a7 0%, #00796b 100%) !important; /* Gradiente invertido no hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo para o item de menu selecionado */
+.ant-menu-item-selected,
+.ant-menu-submenu-title.ant-menu-item-selected {
+  background: linear-gradient(180deg, #00796b 0%, #004d40 100%) !important; /* Gradiente personalizado */
+  color: #ffffff !important; /* Cor do texto */
+  border-radius: 4px; /* Ajusta o border-radius para combinar com o estilo do trigger */
+  font-weight: bold; /* Destaca o texto com negrito */
+}
+
+/* Estilo para o texto do item selecionado */
+.ant-menu-item-selected a,
+.ant-menu-submenu-title.ant-menu-item-selected a {
+  color: #ffffff !important; /* Cor do texto */
+}
+
+/* Estilo para o ícone do item selecionado */
+.ant-menu-item-selected .anticon,
+.ant-menu-submenu-title.ant-menu-item-selected .anticon {
+  color: #ffffff !important; /* Cor do ícone */
+}
+
+.gradient-button {
+  background: linear-gradient(180deg, #004d40 0%, #00796b 100%);
+  border: 1px solid transparent;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.gradient-button:hover,
+.gradient-button:focus {
+  background: linear-gradient(180deg, #003d33 0%, #00695c 100%);
+  border-color: transparent;
+  color: white;
+}
+
+.gradient-button:active {
+  background: linear-gradient(180deg, #003d33 0%, #004d40 100%);
 }

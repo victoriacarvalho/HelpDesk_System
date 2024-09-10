@@ -58,33 +58,33 @@ const AddNewTecnico = () => {
       { label: <Link to="/tecnico">Técnico</Link>, key: '2' },
       { label: <Link to="/admins">Administradores</Link>, key: '3' },
     ]},
-    { label: 'Adicionar', key: 'sub1', icon: <UserOutlined />, children: [
+    { label: 'Adicionar', key: 'sub2', icon: <UserOutlined />, children: [
       { label: <Link to="/admin/addnew">Administrador</Link>, key: '4' },
       { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '5' },
     ]},
-    { label: <Link to="/messages">Mensagens</Link>, key: '5', icon: <TeamOutlined /> },
-    { label: <span onClick={handleLogout}>Logout</span>, key: '6', icon: <FileOutlined /> },
+    { label: <Link to="/messages">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
+    { label: <span onClick={handleLogout}>Logout</span>, key: '7', icon: <FileOutlined /> },
   ];
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={setCollapsed}
-          style={{
-            background: 'linear-gradient(180deg, #004d40 0%, #00796b 100%)',
-            borderRight: '1px solid #004d40',
-            boxShadow: '2px 0 8px rgba(0, 0, 0, 0.2)',
-            borderRadius: '0 10px 10px 0',
-          }}
-        >
-        <div className="demo-logo-vertical" style={{ padding: '16px' }}>
-          {/* Logo or other content */}
+        collapsible
+        collapsed={collapsed}
+        onCollapse={setCollapsed}
+        style={{
+          background: "linear-gradient(180deg, #004d40 0%, #a5d6a7 100%)",
+          borderRight: '1px solid #004d40',
+          boxShadow: '2px 0 8px rgba(0, 0, 0, 0.2)',
+          borderRadius: '0 10px 10px 0',
+        }}
+      >
+        <div className="demo-logo-vertical" style={{ padding: '16px', textAlign: 'center' }}>
+          <img src="/logo.png" alt="Logo" style={{ height: 120 }} />
         </div>
         <Menu
           theme="dark"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['5']}
           mode="inline"
           items={menuItems}
           style={{
@@ -172,9 +172,13 @@ const AddNewTecnico = () => {
                 </Form.Item>
                 <Form.Item>
                   <Space direction="vertical" style={{ width: '100%' }}>
-                    <Button type="primary" htmlType="submit" style={{ width: '100%', backgroundColor: '#4CAF50', borderColor: '#4CAF50' }}>
-                      Registrar
-                    </Button>
+                  <Button
+                    htmlType="submit"
+                    className="gradient-button"
+                    style={{ width: '100%' }}
+                  >
+                    Registrar
+                  </Button>
                   </Space>
                 </Form.Item>
               </Form>

@@ -4,12 +4,14 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import axios from "axios";
-import { Input, Button, message, Card } from "antd";
+import { TextField, Button, Card, Typography, Switch } from "@mui/material";
+import Box from "@mui/material/Box";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [registration, setRegistration] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigateTo = useNavigate();
@@ -27,7 +29,7 @@ const Login = () => {
           }
         )
         .then((res) => {
-          message.success(res.data.message);
+          toast.success(res.data.message);
           setIsAuthenticated(true);
           navigateTo("/");
           setEmail("");
@@ -35,7 +37,7 @@ const Login = () => {
           setRegistration("");
         });
     } catch (error) {
-      message.error(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -44,82 +46,85 @@ const Login = () => {
   }
 
   return (
-    <div
-      className="login-container"
-      style={{
+    <Box
+      sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        background: "linear-gradient(180deg, #004d40 0%, #00796b 100%)", 
-        padding: "0 20px",
-        boxSizing: "border-box",
+        background: "linear-gradient(180deg, #004d40 0%, #a5d6a7 100%)", // Dark green to light green
+        padding: "20px",
       }}
     >
-      <Card
-        title="BEM VINDO AO TICKET+"
-        style={{
-          width: 400,
-          padding: '20px',
-          borderRadius: '12px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-          backgroundColor: '#fff',
-        }}
-      >
-        <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+      <Card sx={{ width: 400, padding: 3, borderRadius: 2, boxShadow: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mb: 2,
+          }}
+        >
           <img src="/logo.png" alt="logo" style={{ width: "180px", height: "auto" }} />
-        </div>
-        <p style={{ textAlign: "center", color: "#333" }}>
+        </Box>
+        <Typography variant="h5" fontWeight="medium" textAlign="center" mb={2}>
+          BEM VINDO AO TICKET+
+        </Typography>
+        <Typography variant="body2" textAlign="center" color="text.secondary" mb={3}>
           Somente administradores têm permissão para acessar esses recursos!
-        </p>
+        </Typography>
         <form onSubmit={handleLogin}>
-          <Input
-            type="text"
-            placeholder="E-mail"
+          <TextField
+            fullWidth
+            label="E-mail"
+            variant="outlined"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{
-              marginBottom: "1rem",
-              borderRadius: '8px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            }}
+            sx={{ mb: 2 }}
           />
-          <Input.Password
-            placeholder="Senha"
+          <TextField
+            fullWidth
+            label="Senha"
+            type="password"
+            variant="outlined"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{
-              marginBottom: "1rem",
-              borderRadius: '8px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            }}
+            sx={{ mb: 2 }}
           />
-          <Input
-            type="text"
-            placeholder="Matrícula"
+          <TextField
+            fullWidth
+            label="Matrícula"
+            variant="outlined"
             value={registration}
             onChange={(e) => setRegistration(e.target.value)}
-            style={{
-              marginBottom: "1rem",
-              borderRadius: '8px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            }}
+            sx={{ mb: 2 }}
           />
+          <Box display="flex" alignItems="center" mb={2}>
+            <Switch checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ cursor: "pointer", ml: 1 }}
+              onClick={() => setRememberMe(!rememberMe)}
+            >
+              Remember me
+            </Typography>
+          </Box>
           <Button
-            type="primary"
-            htmlType="submit"
-            style={{
-              width: "100%",
-              borderRadius: '8px',
-              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-              backgroundColor:"linear-gradient(180deg, #004d40 0%, #00796b 100%)",
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{
+              mb: 3,
+              background: "linear-gradient(180deg, #004d40 0%, #00796b 100%)",
+              color: "#fff",
             }}
           >
             Login
           </Button>
         </form>
       </Card>
-    </div>
+    </Box>
   );
 };
 

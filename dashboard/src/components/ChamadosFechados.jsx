@@ -1,16 +1,19 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../main";
 import { Navigate, Link } from "react-router-dom";
 import axios from "axios";
 import { message, Table, Tag, Layout, Typography, Breadcrumb, Card, Menu } from 'antd';
-import { PieChartOutlined, DesktopOutlined, UserOutlined, TeamOutlined, FileOutlined } from '@ant-design/icons';
+import { PieChartOutlined, UserOutlined, TeamOutlined, FileOutlined } from '@ant-design/icons';
 
 const { Content, Sider, Header } = Layout;
 const { Title, Text } = Typography;
 
 const ClosedChamados = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -52,6 +55,20 @@ const ClosedChamados = () => {
     return <Navigate to={"/login"} />;
   }
 
+  const menuItems = [
+    { label: <Link to="/">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
+    { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
+      { label: <Link to="/tecnico">Técnico</Link>, key: '2'},
+      { label: <Link to="/admins">Administradores</Link>, key: '3' },
+    ]},
+    { label: 'Adicionar', key: 'sub2', icon: <UserOutlined />, children: [
+      { label: <Link to="/admin/addnew">Administrador</Link>, key: '4' },
+      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '5' },
+    ]},
+    { label: <Link to="/messages">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
+    { label: <span onClick={handleLogout}>Logout</span>, key: '7', icon: <FileOutlined /> },
+  ];
+
   const columns = [
     {
       title: 'Requerente',
@@ -92,32 +109,43 @@ const ClosedChamados = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible style={{ backgroundColor: '#1c4529' }} >
-        <div className="logo" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" style={{ backgroundColor: '#1c4529' }}>
-          <Menu.Item key="1" icon={<PieChartOutlined />}><Link to="/">Dashboard</Link></Menu.Item>
-          <Menu.SubMenu key="sub2" icon={<DesktopOutlined />}title="Consultar">
-             <Menu.Item><Link to="/tecnico">Técnico</Link></Menu.Item>
-             <Menu.Item><Link to="/admins">Administrador</Link></Menu.Item>
-            </Menu.SubMenu>
-          <Menu.SubMenu key="sub1" icon={<UserOutlined />} title="Adicionar">
-            <Menu.Item key="3"><Link to="/admin/addnew">Administrador</Link></Menu.Item>
-            <Menu.Item key="4"><Link to="/tecnico/addnew">Técnico</Link></Menu.Item>
-          </Menu.SubMenu>
-          <Menu.Item key="5" icon={<TeamOutlined />}><Link to="/messages">Mensagens</Link></Menu.Item>
-          <Menu.Item key="6" icon={<FileOutlined />}><a href="#" onClick={handleLogout}>Logout</a></Menu.Item>
-        </Menu>
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={setCollapsed}
+        style={{
+          background: "linear-gradient(180deg, #004d40 0%, #a5d6a7 100%)",
+          borderRight: '1px solid #004d40',
+          boxShadow: '2px 0 8px rgba(0, 0, 0, 0.2)',
+          borderRadius: '0 10px 10px 0',
+        }}
+      >
+        <div className="demo-logo-vertical" style={{ padding: '16px', textAlign: 'center' }}>
+          <img src="/logo.png" alt="Logo" style={{ height: 40 }} />
+        </div>
+        <Menu
+          theme="dark"
+          mode="inline"
+          items={menuItems}
+          style={{
+            background: 'transparent',
+            borderRight: 'none',
+          }}
+        />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: '#fff' }} />
-        <Content style={{ margin: '0 16px' }}>
+        <Header style={{ padding: 0, background: '#fff', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+          <div style={{ padding: '0 24px', display: 'flex', alignItems: 'center' }}>
+            <img src="/logo.png" alt="Logo" style={{ height: 50 }} />
+          </div>
+        </Header>
+        <Content style={{ margin: '0 16px', background: '#f0f2f5' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item><Link to="/">Dashboard</Link></Breadcrumb.Item>
             <Breadcrumb.Item>Chamados Fechados</Breadcrumb.Item>
           </Breadcrumb>
-          <div style={{ padding: 24, minHeight: 360, background: '#fff', borderRadius: 8 }}>
+          <div style={{ padding: 24, minHeight: 360, background: '#fff', borderRadius: 8, boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
             <Card
-              className="banner"
               bordered={false}
               style={{ marginBottom: 24, textAlign: 'center', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}
             >
@@ -129,7 +157,8 @@ const ClosedChamados = () => {
               dataSource={chamados}
               rowKey="_id"
               pagination={{ pageSize: 5 }}
-              style={{ marginBottom: 24 , boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '8px' }}
+              style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '8px' }}
+              bordered
             />
           </div>
         </Content>
