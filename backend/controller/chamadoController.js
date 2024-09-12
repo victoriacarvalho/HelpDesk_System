@@ -15,20 +15,12 @@ export const postChamado = catchAsyncErrors(async (req, res, next) => {
         description,
     } = req.body;
 
-    if (
-        !firstName ||
-        !lastName ||
-        !email ||
-        !phone ||
-        !sector ||
-        !title ||
-        !description
-        
-    ) {
+    if (!firstName || !lastName || !email || !phone || !sector || !title || !description) {
         return next(new ErrorHandler("Por favor, preencha todo o formulário!", 400));
     }
 
     const userId = req.user._id;
+
     const chamado = await Chamado.create({
         firstName,
         lastName,
@@ -39,16 +31,16 @@ export const postChamado = catchAsyncErrors(async (req, res, next) => {
         description,
         userId,
     });
-     res.status(200).json({
+
+    res.status(200).json({
         success: true,
         chamado,
         message: "Chamado enviado!",
-   });
-        
+    });
 });
 
 export const getAllChamados = catchAsyncErrors(async (req, res, next) => {
-    const chamados = await Chamado.find();
+    const chamados = await Chamado.find().populate('tecnico');  // Popula o campo técnico
     res.status(200).json({
         success: true,
         chamados,
@@ -67,45 +59,29 @@ export const updateChamadoStatus = catchAsyncErrors(async (req, res, next) => {
         new: true,
         runValidators: true,
         useFindAndModify: false,
-    });
+    })
 
     res.status(200).json({
         success: true,
         message: "Status do chamado atualizado!",
         chamado,
-      });
-    }
-);
-
-export const deleteChamado = catchAsyncErrors(async (req, res, next) => {
-    const { id } = req.params;
-
-    const chamado = await Chamado.findById(id);
-    if (!chamado) {
-        return next(new ErrorHandler("Chamado não encontrado!", 404));
-    }
-
-    await Chamado.deleteOne();
-
-    res.status(200).json({
-        success: true,
-        message: "Chamado deletado!",
     });
 });
 
 export const countChamado = catchAsyncErrors(async (req, res, next) => {
     try {
-      const count = await Chamado.countDocuments(); // Conta todos os documentos na coleção Chamado
-      res.status(200).json({ count });
+        const count = await Chamado.countDocuments(); // Conta todos os documentos na coleção Chamado
+        res.status(200).json({ count });
     } catch (error) {
-      next(new ErrorHandler('Erro ao contar chamados', 500)); // Usa ErrorHandler para lidar com erros
+        next(new ErrorHandler('Erro ao contar chamados', 500)); // Usa ErrorHandler para lidar com erros
     }
-  });
+});
 
-  export const getChamadoById = catchAsyncErrors(async (req, res, next) => {
+export const getChamadoById = catchAsyncErrors(async (req, res, next) => {
     const { id } = req.params;
-
-    const chamado = await Chamado.findById(id);
+    
+    // Busca o chamado pelo ID
+    const chamado = await Chamado.findById(id).populate('tecnico');
     if (!chamado) {
         return next(new ErrorHandler("Chamado não encontrado!", 404));
     }
@@ -116,4 +92,29 @@ export const countChamado = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-  
+
+export const assignTecnico = catchAsyncErrors(async (req, res, next) => {
+    const { id } = req.params;
+    const { tecnicoId } = req.body;
+
+    // Verifica se o técnico está disponível
+    const tecnico = await User.findById(tecnicoId);
+    if (!tecnico) {
+        return next(new ErrorHandler('Técnico não encontrado!', 404));
+    }
+
+    // Atualiza o chamado com o técnico selecionado
+    const chamado = await Chamado.findById(id);
+    if (!chamado) {
+        return next(new ErrorHandler("Chamado não encontrado!", 404));
+    }
+
+    chamado.tecnico = tecnicoId;
+    await chamado.save();
+
+    res.status(200).json({
+        success: true,
+        chamado,
+        message: "Técnico atribuído com sucesso!",
+    });
+});

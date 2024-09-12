@@ -2,9 +2,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from 'axios';
 import { Context } from "../main";
-import { Navigate,useParams, Link } from 'react-router-dom';
+import { Navigate, useParams, Link } from 'react-router-dom';
 import { Card, Spin, Alert, Typography, Layout, Menu, Breadcrumb, message } from 'antd';
-import { PieChartOutlined, DesktopOutlined, UserOutlined, TeamOutlined, FileOutlined } from '@ant-design/icons';
+import { PieChartOutlined, UserOutlined, TeamOutlined, FileOutlined } from '@ant-design/icons';
 
 const { Content: AntdContent, Sider, Header } = Layout;
 const { Title, Text } = Typography;
@@ -48,7 +48,6 @@ const ChamadoDetails = () => {
     return <Navigate to={"/login"} />;
   }
 
-
   const menuItems = [
     { label: <Link to="/">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
     { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
@@ -62,6 +61,7 @@ const ChamadoDetails = () => {
     { label: <Link to="/messages">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
     { label: <span onClick={handleLogout}>Logout</span>, key: '7', icon: <FileOutlined /> },
   ];
+
   if (loading) return <Spin size="large" tip="Carregando..." />;
 
   return (
@@ -129,6 +129,15 @@ const ChamadoDetails = () => {
                 </div>
                 <div>
                   <Text strong>Data do Chamado:</Text> <Text>{new Date(chamado.chamado_date).toLocaleDateString()}</Text>
+                </div>
+                <div style={{ marginBottom: '16px' }}>
+                  <p/>
+                  <Text strong>Técnico Atribuído:</Text>
+                  {chamado.tecnico ? (
+                    <Text>{`${chamado.tecnico.firstName} ${chamado.tecnico.lastName}`}</Text>
+                  ) : (
+                    <Text>Não atribuído</Text>
+                  )}
                 </div>
               </Card>
             ) : (

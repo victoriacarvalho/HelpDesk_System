@@ -1,6 +1,4 @@
-
 import mongoose from "mongoose";
-import { Mongoose } from "mongoose";
 import validator from "validator";
 
 const chamadoSchema = new mongoose.Schema({
@@ -34,6 +32,10 @@ const chamadoSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
     },
+    tecnico: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",  // Referência ao modelo User
+    },
     status: {
         type: String,
         enum: ["Pendente", "Aberto", "Encerrado"],
@@ -52,7 +54,7 @@ const chamadoSchema = new mongoose.Schema({
     chamado_date: {
         type: Date,
         default: Date.now,
-      },
+    },
 });
 
 export const Chamado = mongoose.model("Chamado", chamadoSchema);

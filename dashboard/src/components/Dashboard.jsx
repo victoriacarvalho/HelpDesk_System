@@ -9,11 +9,14 @@ import { Table, Dropdown, Button, Menu, message, Layout, Breadcrumb, Card, Row, 
 import { DownOutlined, DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { BarChart, Bar } from 'recharts';
+import TecnicoDropdown from './TecnicoDropdown';
+import moment from 'moment';
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const Dashboard = () => {
   const [chamados, setChamados] = useState([]);
+  const [tecnicos, setTecnicos] = useState([]);
   const [totalChamados, setTotalChamados] = useState(0);
   const [chamadosAbertos, setChamadosAbertos] = useState(0);
   const [chamadosFechados, setChamadosFechados] = useState(0);
@@ -38,6 +41,20 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+
+    const fetchTecnicos = async () => {
+      try {
+        const { data: tecnicoData } = await axios.get(
+          'http://localhost:4000/api/v1/user/tecnico',
+          { withCredentials: true } 
+        );
+        console.log('Dados dos técnicos:', tecnicoData.tecnicos); 
+        setTecnicos(tecnicoData.tecnicos);
+      } catch (error) {
+          console.error('Erro ao buscar técnicos:', error);
+      }
+    };
+  
     const fetchChamados = async () => {
       try {
         const { data } = await axios.get(
@@ -75,6 +92,7 @@ const Dashboard = () => {
       }
     };
     fetchChamados();
+    fetchTecnicos();
   }, []);
 
   const calculateMonthlyMetrics = (chamados) => {
@@ -185,6 +203,25 @@ const Dashboard = () => {
       </Dropdown>
     );
   };
+  
+const handleTecnicoChange = async (chamadoId, tecnicoId) => {
+  const tecnico = tecnicos.find(t => t._id === tecnicoId);
+  if (!tecnico) return;
+
+  try {
+    await axios.put(`http://localhost:4000/api/v1/chamado/update/${chamadoId}`, { tecnico: tecnico._id }, { withCredentials: true });
+    message.success("Técnico atualizado com sucesso!");
+    // Atualizar a lista de chamados após a atualização
+    const chamadosResponse = await axios.get('http://localhost:4000/api/v1/chamado/getall', { withCredentials: true });
+    setChamados(chamadosResponse.data.chamados);
+    // Atualizar a contagem de chamados abertos
+    const abertosCount = chamadosResponse.data.chamados.filter((chamado) => chamado.status === "Aberto").length;
+    setChamadosAbertos(abertosCount);
+  } catch (error) {
+    toast.error("Erro ao atualizar o técnico");
+  }
+};
+
 
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
@@ -246,67 +283,67 @@ const Dashboard = () => {
         </Header>
         <Content style={{ margin: '0 16px' }}>
           <div style={{ padding: 24, minHeight: 360, background: '#ffffff', borderRadius: 8, boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-          <Row gutter={16}>
-          <Col span={8}>
-            <Card
-              style={{
-                height: '180px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                borderRadius: '12px',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                overflow: 'hidden',
-                background: '#00796b',
-                color: '#ffffff',
-                textAlign: 'center'
-              }}
-            >
-              <h3 style={{ margin: '0 0 8px 0' }}>Chamados Fechados</h3>
-              <h2 style={{ margin: '0 0 16px 0' }}>{totalChamados}</h2>
-              <Link to="/chamadosFechados" style={{ color: '#ffffff', fontWeight: 'bold', textDecoration: 'underline' }}>Ver detalhes</Link>
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card
-              style={{
-                height: '180px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                borderRadius: '12px',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                overflow: 'hidden',
-                background: '#00796b',
-                color: '#ffffff',
-                textAlign: 'center'
-              }}
-            >
-              <h3 style={{ margin: '0 0 8px 0' }}>Total de Chamados</h3>
-              <h2 style={{ margin: '0' }}>{totalChamados}</h2>
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card
-              style={{
-                height: '180px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                borderRadius: '12px',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                overflow: 'hidden',
-                background: '#00796b',
-                color: '#ffffff',
-                textAlign: 'center'
-              }}
-            >
-              <h3 style={{ margin: '0 0 8px 0' }}>Chamados Abertos</h3>
-              <h2 style={{ margin: '0' }}>{chamadosAbertos}</h2>
-            </Card>
-          </Col>
-        </Row>
-
+            <Row gutter={16}>
+              <Col span={8}>
+                <Card
+                  style={{
+                    height: '180px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                    overflow: 'hidden',
+                    background: '#00796b',
+                    color: '#ffffff',
+                    textAlign: 'center'
+                  }}
+                >
+                  <h3 style={{ margin: '0 0 8px 0' }}>Chamados Fechados</h3>
+                  <h2 style={{ margin: '0 0 16px 0' }}>{totalChamados}</h2>
+                  <Link to="/chamadosFechados" style={{ color: '#ffffff', fontWeight: 'bold', textDecoration: 'underline' }}>Ver detalhes</Link>
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card
+                  style={{
+                    height: '180px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                    overflow: 'hidden',
+                    background: '#00796b',
+                    color: '#ffffff',
+                    textAlign: 'center'
+                  }}
+                >
+                  <h3 style={{ margin: '0 0 8px 0' }}>Total de Chamados</h3>
+                  <h2 style={{ margin: '0' }}>{totalChamados}</h2>
+                </Card>
+              </Col>
+              <Col span={8}>
+                <Card
+                  style={{
+                    height: '180px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                    overflow: 'hidden',
+                    background: '#00796b',
+                    color: '#ffffff',
+                    textAlign: 'center'
+                  }}
+                >
+                  <h3 style={{ margin: '0 0 8px 0' }}>Chamados Abertos</h3>
+                  <h2 style={{ margin: '0' }}>{chamadosAbertos}</h2>
+                </Card>
+              </Col>
+            </Row>
+  
             <div style={{ marginTop: 24 }}>
               <h3>Chamados</h3>
               <Table
@@ -332,6 +369,19 @@ const Dashboard = () => {
                     title: 'Data',
                     dataIndex: 'chamado_date',
                     key: 'chamado_date',
+                    render: (text) => moment(text).format('DD/MM/YYYY'),
+                  },
+                  {
+                    title: "Técnico",
+                    dataIndex: "tecnico",
+                    key: "tecnico",
+                    render: (text, record) => (
+                      <TecnicoDropdown
+                        tecnicos={tecnicos}
+                        selectedTecnicoId={record.tecnico} // Passa o ID do técnico
+                        onChange={(value) => handleTecnicoChange(record._id, value)}
+                      />
+                    ),
                   },
                   {
                     title: 'Status',
@@ -349,7 +399,7 @@ const Dashboard = () => {
               />
             </div>
             <div style={{ marginTop: 24 }}>
-              <h3>Métricas</h3>
+            <h3>Métricas</h3>
               <Row gutter={16}>
                 <Col span={12}>
                   <Card title="Métricas Mensais" bordered={false} style={{ borderRadius: '12px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
@@ -366,14 +416,7 @@ const Dashboard = () => {
                         strokeWidth={3} 
                         dot={{ stroke: '#007bff', strokeWidth: 2, r: 4 }}
                         activeDot={{ stroke: '#0056b3', strokeWidth: 2, r: 6 }}
-                      >
-                        <defs>
-                          <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#007bff" stopOpacity={0.8} />
-                            <stop offset="95%" stopColor="#007bff" stopOpacity={0} />
-                          </linearGradient>
-                        </defs>
-                      </Line>
+                      />
                     </LineChart>
                   </Card>
                 </Col>
@@ -390,12 +433,6 @@ const Dashboard = () => {
                         fill="url(#colorCountBar)" 
                         barSize={30}
                       />
-                      <defs>
-                        <linearGradient id="colorCountBar" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                          <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-                        </linearGradient>
-                      </defs>
                     </BarChart>
                   </Card>
                 </Col>
@@ -404,7 +441,7 @@ const Dashboard = () => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center', background: '#ffffff', padding: '16px 0', boxShadow: '0 -4px 8px rgba(0, 0, 0, 0.1)' }}>
-          Dashboard ©2024
+          TICKET + ©2024
         </Footer>
       </Layout>
       <Modal
@@ -417,7 +454,8 @@ const Dashboard = () => {
       </Modal>
     </Layout>
   );
+  
 };
-
 export default Dashboard;
+
 
