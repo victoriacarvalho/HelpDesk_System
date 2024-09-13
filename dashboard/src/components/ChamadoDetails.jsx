@@ -132,7 +132,7 @@ const ChamadoDetails = () => {
                 </div>
                 <div style={{ marginBottom: '16px' }}>
                   <p/>
-                  <Text strong>Técnico Atribuído:</Text>
+                  <Text strong>Técnico Atribuído: </Text>
                   {chamado.tecnico ? (
                     <Text>{`${chamado.tecnico.firstName} ${chamado.tecnico.lastName}`}</Text>
                   ) : (

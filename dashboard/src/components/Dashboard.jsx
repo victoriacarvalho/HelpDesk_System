@@ -389,6 +389,16 @@ const handleAssignCancel = () => {
                 }}
                 columns={[
                   {
+                    title: 'Título',
+                    dataIndex: 'title',
+                    key: 'title',
+                    render: (_, {title,_id }) => (
+                      <Link to={`/chamadoDetails/${_id}`}>
+                        {`${title}`}
+                      </Link>
+                    ),
+                  },
+                  {
                     title: 'Requerente',
                     dataIndex: 'requerente',
                     key: 'requerente',
@@ -425,7 +435,7 @@ const handleAssignCancel = () => {
                 ]}
                 dataSource={chamadosNaoEncerrados}
                 rowKey="_id"
-                pagination={false}
+                pagination={{ pageSize: 5 }}
                 bordered
                 size="middle"
                 rowClassName="custom-table-row"
@@ -456,6 +466,12 @@ const handleAssignCancel = () => {
                 <Col span={12}>
                   <Card title="Métricas Semanais" bordered={false} style={{ borderRadius: '12px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
                     <BarChart width={600} height={300} data={weeklyMetrics}>
+                      <defs>
+                        <linearGradient id="colorCountBar" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                          <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
                       <XAxis dataKey="weekYear" tick={{ fontSize: 12 }} />
                       <YAxis tick={{ fontSize: 12 }} />
