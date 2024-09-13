@@ -35,30 +35,22 @@ export const userPadraoRegister = catchAsyncErrors(async (req, res, next) => {
     });
 
     generateToken(user, "Usuário Registrado!", 200, res);
+ });
 
-    });
-
-export const login = catchAsyncErrors(async (req, res, next) => {
+ export const login = catchAsyncErrors(async (req, res, next) => {
     const { email, password, registration } = req.body;
-    
+
     if (!email || !password || !registration) {
         return next(new ErrorHandler("Por favor, preencha todos os detalhes!", 400));
     }
     
     const user = await User.findOne({ registration }).select("+password");
-    if (!user) {
-        return next(new ErrorHandler("Matrícula ou senha inválidos!", 400));
+       if (!user) {
+         return next(new ErrorHandler("Matrícula ou senha inválidos!", 400));
     }
-     /*   const isPasswordMatch = await user.comparePassword(password);
-  if (!isPasswordMatch) {
-    return next(new ErrorHandler("Invalid Email Or Password!", 400));
-  }
-  if (role !== user.role) {
-    return next(new ErrorHandler(`User Not Found With This Role!`, 400));
-  }*/ 
-
-    generateToken(user, "Usuário logado com sucesso!", 201, res);
-});
+    
+     generateToken(user, "Usuário logado com sucesso!", 200, res);
+    });
 
 export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
     const { firstName, lastName, email, phone, password, sector, registration } = req.body;

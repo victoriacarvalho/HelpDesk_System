@@ -13,7 +13,7 @@ export const isAdminAuthenticated = catchAsyncErrors(
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.user = await User.findById(decoded.id);
-    if (!["Administrador", "Técnico"].includes(req.user.role)) {
+    if (!["Administrador", "Tecnico"].includes(req.user.role)) {
       return next(
         new ErrorHandler(`${req.user.role} não autorizado para esta funcionalidade!`, 403)
       );

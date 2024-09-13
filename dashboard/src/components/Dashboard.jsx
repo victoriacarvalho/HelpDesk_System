@@ -25,6 +25,10 @@ const Dashboard = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [monthlyMetrics, setMonthlyMetrics] = useState([]);
   const [weeklyMetrics, setWeeklyMetrics] = useState([]);
+  const [isAssignModalVisible, setIsAssignModalVisible] = useState(false);
+  const [selectedChamado, setSelectedChamado] = useState(null);
+  const [selectedTecnico, setSelectedTecnico] = useState(null);
+
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
@@ -39,6 +43,43 @@ const Dashboard = () => {
       message.error(err.response?.data?.message || "Erro ao sair");
     }
   };
+
+  
+const showAssignModal = (chamado) => {
+  setSelectedChamado(chamado);
+  setIsAssignModalVisible(true);
+};
+
+const handleAssignOk = async () => {
+  if (!selectedChamado) return;
+
+  try {
+    await axios.put(
+      `http://localhost:4000/api/v1/chamado/update/${selectedChamado._id}`,
+      { tecnico: selectedChamado.tecnico },
+      { withCredentials: true }
+    );
+    message.success("Técnico atribuído com sucesso!");
+    setChamados((prevChamados) =>
+      prevChamados.map((chamado) =>
+        chamado._id === selectedChamado._id
+          ? { ...chamado, tecnico: selectedChamado.tecnico }
+          : chamado
+      )
+    );
+    setSelectedTecnico(null); // Limpar seleção após atribuição
+    setIsAssignModalVisible(false);
+  } catch (error) {
+    message.error(
+      error.response?.data?.message || "Erro ao atribuir o técnico"
+    );
+  }
+};
+
+
+const handleAssignCancel = () => {
+  setIsAssignModalVisible(false);
+};
 
   useEffect(() => {
 
@@ -204,25 +245,17 @@ const Dashboard = () => {
     );
   };
   
-const handleTecnicoChange = async (chamadoId, tecnicoId) => {
-  const tecnico = tecnicos.find(t => t._id === tecnicoId);
-  if (!tecnico) return;
-
-  try {
-    await axios.put(`http://localhost:4000/api/v1/chamado/update/${chamadoId}`, { tecnico: tecnico._id }, { withCredentials: true });
-    message.success("Técnico atualizado com sucesso!");
-    // Atualizar a lista de chamados após a atualização
-    const chamadosResponse = await axios.get('http://localhost:4000/api/v1/chamado/getall', { withCredentials: true });
-    setChamados(chamadosResponse.data.chamados);
-    // Atualizar a contagem de chamados abertos
-    const abertosCount = chamadosResponse.data.chamados.filter((chamado) => chamado.status === "Aberto").length;
-    setChamadosAbertos(abertosCount);
-  } catch (error) {
-    toast.error("Erro ao atualizar o técnico");
-  }
-};
-
-
+  const handleTecnicoChange = (chamadoId, tecnicoId) => {
+    const chamado = chamados.find(c => c._id === chamadoId);
+    if (!chamado) return;
+  
+    const tecnico = tecnicos.find(t => t._id === tecnicoId); // Encontrar o técnico selecionado
+    setSelectedTecnico(tecnico); // Atualizar o estado do técnico selecionado
+    setSelectedChamado({ ...chamado, tecnico: tecnicoId });
+    showAssignModal(chamado);
+  };
+  
+  
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
   }
@@ -452,6 +485,15 @@ const handleTecnicoChange = async (chamadoId, tecnicoId) => {
       >
         <p>Você tem certeza que deseja encerrar este chamado?</p>
       </Modal>
+      <Modal
+        title="Confirmar Atribuição de Técnico"
+        visible={isAssignModalVisible}
+        onOk={handleAssignOk}
+        onCancel={handleAssignCancel}
+      >
+        <p>Você tem certeza que deseja atribuir o técnico {selectedTecnico ? selectedTecnico.nome : ''} ao chamado?</p>
+      </Modal>
+
     </Layout>
   );
   
