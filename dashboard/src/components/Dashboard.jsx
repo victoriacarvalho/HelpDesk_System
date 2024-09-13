@@ -67,7 +67,7 @@ const handleAssignOk = async () => {
           : chamado
       )
     );
-    setSelectedTecnico(null); // Limpar seleção após atribuição
+    setSelectedTecnico(null); 
     setIsAssignModalVisible(false);
   } catch (error) {
     message.error(
@@ -120,7 +120,6 @@ const handleAssignCancel = () => {
         ).length;
         setChamadosFechados(fechadosCount);
 
-        // Calculate monthly metrics
         const metrics = calculateMonthlyMetrics(data.chamados);
         setMonthlyMetrics(metrics);
         const metricsWeekly = calculateWeeklyMetrics(data.chamados);
@@ -249,8 +248,8 @@ const handleAssignCancel = () => {
     const chamado = chamados.find(c => c._id === chamadoId);
     if (!chamado) return;
   
-    const tecnico = tecnicos.find(t => t._id === tecnicoId); // Encontrar o técnico selecionado
-    setSelectedTecnico(tecnico); // Atualizar o estado do técnico selecionado
+    const tecnico = tecnicos.find(t => t._id === tecnicoId); 
+    setSelectedTecnico(tecnico); 
     setSelectedChamado({ ...chamado, tecnico: tecnicoId });
     showAssignModal(chamado);
   };
@@ -333,7 +332,7 @@ const handleAssignCancel = () => {
                   }}
                 >
                   <h3 style={{ margin: '0 0 8px 0' }}>Chamados Fechados</h3>
-                  <h2 style={{ margin: '0 0 16px 0' }}>{totalChamados}</h2>
+                  <h2 style={{ margin: '0 0 16px 0' }}>{chamadosFechados}</h2>
                   <Link to="/chamadosFechados" style={{ color: '#ffffff', fontWeight: 'bold', textDecoration: 'underline' }}>Ver detalhes</Link>
                 </Card>
               </Col>
