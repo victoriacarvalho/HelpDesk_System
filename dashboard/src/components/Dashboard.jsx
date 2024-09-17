@@ -12,6 +12,7 @@ import { BarChart, Bar } from 'recharts';
 import TecnicoDropdown from './TecnicoDropdown';
 import moment from 'moment';
 
+
 const { Header, Content, Footer, Sider } = Layout;
 
 const Dashboard = () => {
@@ -67,7 +68,6 @@ const handleAssignOk = async () => {
           : chamado
       )
     );
-    setSelectedTecnico(null); // Limpar seleção após atribuição
     setIsAssignModalVisible(false);
   } catch (error) {
     message.error(
@@ -125,6 +125,7 @@ const handleAssignCancel = () => {
         setMonthlyMetrics(metrics);
         const metricsWeekly = calculateWeeklyMetrics(data.chamados);
         setWeeklyMetrics(metricsWeekly);
+
       } catch (error) {
         message.error("Erro ao carregar os chamados");
         setChamados([]);
@@ -246,14 +247,16 @@ const handleAssignCancel = () => {
   };
   
   const handleTecnicoChange = (chamadoId, tecnicoId) => {
+  
     const chamado = chamados.find(c => c._id === chamadoId);
     if (!chamado) return;
-  
-    const tecnico = tecnicos.find(t => t._id === tecnicoId); // Encontrar o técnico selecionado
-    setSelectedTecnico(tecnico); // Atualizar o estado do técnico selecionado
-    setSelectedChamado({ ...chamado, tecnico: tecnicoId });
-    showAssignModal(chamado);
+    const tecnico = tecnicos.find(t => t._id === tecnicoId);
+    if (!tecnico) return; 
+    setSelectedChamado({ ...chamado, tecnico: tecnico }); 
+    setSelectedTecnico(tecnico);
+    showAssignModal({ ...chamado, tecnico: tecnico });
   };
+  
   
   
   if (!isAuthenticated) {
@@ -333,7 +336,7 @@ const handleAssignCancel = () => {
                   }}
                 >
                   <h3 style={{ margin: '0 0 8px 0' }}>Chamados Fechados</h3>
-                  <h2 style={{ margin: '0 0 16px 0' }}>{totalChamados}</h2>
+                  <h2 style={{ margin: '0 0 16px 0' }}>{chamadosFechados}</h2>
                   <Link to="/chamadosFechados" style={{ color: '#ffffff', fontWeight: 'bold', textDecoration: 'underline' }}>Ver detalhes</Link>
                 </Card>
               </Col>
@@ -420,10 +423,10 @@ const handleAssignCancel = () => {
                     key: "tecnico",
                     render: (text, record) => (
                       <TecnicoDropdown
-                        tecnicos={tecnicos}
-                        selectedTecnicoId={record.tecnico} // Passa o ID do técnico
-                        onChange={(value) => handleTecnicoChange(record._id, value)}
-                      />
+                      tecnicos={tecnicos}
+                      selectedTecnicoId={record.tecnico ? record.tecnico._id : null} // Se `record.tecnico` for um objeto
+                      onChange={(value) => handleTecnicoChange(record._id, value)}
+                    />
                     ),
                   },
                   {

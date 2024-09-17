@@ -152,10 +152,10 @@ export const getAllTecnicos = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getAllAdmin = catchAsyncErrors(async (req, res, next) => {
-    const tecnicos = await User.find({ role: "Administrador" });
+    const administrador = await User.find({ role: "Administrador" });
     res.status(200).json({
         success: true,
-        tecnicos,
+        administrador,
     });
 });
 

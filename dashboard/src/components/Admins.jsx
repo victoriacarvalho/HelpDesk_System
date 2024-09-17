@@ -22,7 +22,7 @@ const Admins = () => {
                     { withCredentials: true }
                 );
                 // Filtra apenas os administradores da lista de técnicos
-                const administradores = data.tecnicos.filter(tecnico => tecnico.role === "Administrador");
+                const administradores = data.administrador.filter(tecnico => tecnico.role === "Administrador");
                 setAdmins(administradores);
             } catch (error) {
                 message.error(error.response?.data?.message || "Erro ao buscar administradores");

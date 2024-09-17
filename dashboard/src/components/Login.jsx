@@ -98,17 +98,6 @@ const Login = () => {
             onChange={(e) => setRegistration(e.target.value)}
             sx={{ mb: 2 }}
           />
-          <Box display="flex" alignItems="center" mb={2}>
-            <Switch checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ cursor: "pointer", ml: 1 }}
-              onClick={() => setRememberMe(!rememberMe)}
-            >
-              Remember me
-            </Typography>
-          </Box>
           <Button
             type="submit"
             variant="contained"
