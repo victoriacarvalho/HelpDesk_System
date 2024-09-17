@@ -102,6 +102,7 @@ const handleAssignCancel = () => {
           "http://localhost:4000/api/v1/chamado/getall",
           { withCredentials: true }
         );
+        const sortedChamados = data.chamados.sort((a, b) => new Date(b.chamado_date) - new Date(a.chamado_date));
         setChamados(data.chamados);
 
         const countResponse = await axios.get(
@@ -424,7 +425,7 @@ const handleAssignCancel = () => {
                     render: (text, record) => (
                       <TecnicoDropdown
                       tecnicos={tecnicos}
-                      selectedTecnicoId={record.tecnico ? record.tecnico._id : null} // Se `record.tecnico` for um objeto
+                      selectedTecnicoId={record.tecnico ? record.tecnico._id : null} 
                       onChange={(value) => handleTecnicoChange(record._id, value)}
                     />
                     ),
@@ -510,7 +511,7 @@ const handleAssignCancel = () => {
         onOk={handleAssignOk}
         onCancel={handleAssignCancel}
       >
-        <p>Você tem certeza que deseja atribuir o técnico {selectedTecnico ? selectedTecnico.nome : ''} ao chamado?</p>
+        <p>Você tem certeza que deseja atribuir o técnico {selectedTecnico ? `${selectedTecnico.firstName} ${selectedTecnico.lastName} ` : ' '}</p>
       </Modal>
 
     </Layout>
