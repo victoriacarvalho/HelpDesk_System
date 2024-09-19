@@ -10,7 +10,7 @@ import { PieChartOutlined, UserOutlined, TeamOutlined, FileOutlined } from '@ant
 const { Content, Sider, Header } = Layout;
 const { Title, Text } = Typography;
 
-const ClosedChamados = () => {
+const ChamadosFechadosTec = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   const [collapsed, setCollapsed] = useState(false);
@@ -56,17 +56,13 @@ const ClosedChamados = () => {
   }
 
   const menuItems = [
-    { label: <Link to="/">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
+    { label: <Link to="/dashboardTecnico">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
     { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
-      { label: <Link to="/tecnico">Técnico</Link>, key: '2'},
-      { label: <Link to="/admins">Administradores</Link>, key: '3' },
+      { label: <Link to="/tecnicoTec">Técnico</Link>, key: '2'},
+      { label: <Link to="/adminsTec">Administradores</Link>, key: '3' },
       { label: <Link to="/userP">Usuários</Link>, key: '8' },
     ]},
-    { label: 'Adicionar', key: 'sub2', icon: <UserOutlined />, children: [
-      { label: <Link to="/admin/addnew">Administrador</Link>, key: '4' },
-      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '5' },
-    ]},
-    { label: <Link to="/messages">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
+    { label: <Link to="/messagesTec">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
     { label: <span onClick={handleLogout}>Logout</span>, key: '7', icon: <FileOutlined /> },
   ];
 
@@ -137,7 +133,7 @@ const ClosedChamados = () => {
       <Layout>
         <Header style={{ padding: 0, background: '#fff', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
           <div style={{ padding: '0 24px', display: 'flex', alignItems: 'center' }}>
-            <img src="/logo.png" alt="Logo" style={{ height: 50 }} />
+            <img src="/logo.png" alt="Logo" style={{ height: 120 }} />
           </div>
         </Header>
         <Content style={{ margin: '0 16px', background: '#f0f2f5' }}>
@@ -168,4 +164,4 @@ const ClosedChamados = () => {
   );
 };
 
-export default ClosedChamados;
+export default ChamadosFechadosTec;

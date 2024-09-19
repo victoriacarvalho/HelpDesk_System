@@ -10,7 +10,7 @@ import { DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutl
 const { Content, Sider, Header } = Layout;
 const { Title, Text } = Typography;
 
-const Tecnico = () => {
+const TecnicoTec = () => {
     const [tecnicos, setTecnicos] = useState([]);
     const { isAuthenticated, setIsAuthenticated } = useContext(Context);
     const [collapsed, setCollapsed] = useState(false);
@@ -47,17 +47,13 @@ const Tecnico = () => {
     }
 
     const menuItems = [
-        { label: <Link to="/">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
+        { label: <Link to="/dashboardTecnico">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
         { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
-            { label: <Link to="/tecnico">Técnico</Link>, key: '2'},
-          { label: <Link to="/admins">Administradores</Link>, key: '3' },
+            { label: <Link to="/tecnicoTec">Técnico</Link>, key: '2'},
+          { label: <Link to="/adminsTec">Administradores</Link>, key: '3' },
           { label: <Link to="/userP">Usuários</Link>, key: '8' },
         ]},
-        { label: 'Adicionar', key: 'sub2', icon: <UserOutlined />, children: [
-          { label: <Link to="/admin/addnew">Administrador</Link>, key: '4' },
-          { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '5' },
-        ]},
-        { label: <Link to="/messages">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
+        { label: <Link to="/messagesTec">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
         { label: <span onClick={handleLogout}>Logout</span>, key: '7', icon: <FileOutlined /> },
       ];
 
@@ -129,4 +125,4 @@ const Tecnico = () => {
     );
 };
 
-export default Tecnico;
+export default TecnicoTec;

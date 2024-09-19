@@ -15,7 +15,7 @@ import moment from 'moment';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const Dashboard = () => {
+const DashboardTecnico = () => {
   const [chamados, setChamados] = useState([]);
   const [tecnicos, setTecnicos] = useState([]);
   const [totalChamados, setTotalChamados] = useState(0);
@@ -269,17 +269,13 @@ const handleAssignCancel = () => {
   );
 
   const menuItems = [
-    { label: <Link to="/">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
+    { label: <Link to="/dashboardTecnico">Dashboard</Link>, key: '1', icon: <PieChartOutlined /> },
     { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
-      { label: <Link to="/tecnico">Técnico</Link>, key: '2'},
-      { label: <Link to="/admins">Administradores</Link>, key: '3' },
+      { label: <Link to="/tecnicoTec">Técnico</Link>, key: '2'},
+      { label: <Link to="/adminsTec">Administradores</Link>, key: '3' },
       { label: <Link to="/userP">Usuários</Link>, key: '8' },
     ]},
-    { label: 'Adicionar', key: 'sub2', icon: <UserOutlined />, children: [
-      { label: <Link to="/admin/addnew">Administrador</Link>, key: '4' },
-      { label: <Link to="/tecnico/addnew">Técnico</Link>, key: '5' },
-    ]},
-    { label: <Link to="/messages">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
+    { label: <Link to="/messagesTec">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
     { label: <span onClick={handleLogout}>Logout</span>, key: '7', icon: <FileOutlined /> },
   ];
 
@@ -339,7 +335,7 @@ const handleAssignCancel = () => {
                 >
                   <h3 style={{ margin: '0 0 8px 0' }}>Chamados Fechados</h3>
                   <h2 style={{ margin: '0 0 16px 0' }}>{chamadosFechados}</h2>
-                  <Link to="/chamadosFechados" style={{ color: '#ffffff', fontWeight: 'bold', textDecoration: 'underline' }}>Ver detalhes</Link>
+                  <Link to="/chamadosFechadosTec" style={{ color: '#ffffff', fontWeight: 'bold', textDecoration: 'underline' }}>Ver detalhes</Link>
                 </Card>
               </Col>
               <Col span={8}>
@@ -398,7 +394,7 @@ const handleAssignCancel = () => {
                     dataIndex: 'title',
                     key: 'title',
                     render: (_, {title,_id }) => (
-                      <Link to={`/chamadoDetails/${_id}`}>
+                      <Link to={`/chamadoDetailsTec/${_id}`}>
                         {`${title}`}
                       </Link>
                     ),
@@ -408,7 +404,7 @@ const handleAssignCancel = () => {
                     dataIndex: 'requerente',
                     key: 'requerente',
                     render: (_, { firstName, lastName, _id }) => (
-                      <Link to={`/chamadoDetails/${_id}`}>
+                      <Link to={`/chamadoDetailsTec/${_id}`}>
                         {`${firstName} ${lastName}`}
                       </Link>
                     ),
@@ -519,6 +515,6 @@ const handleAssignCancel = () => {
   );
   
 };
-export default Dashboard;
+export default DashboardTecnico;
 
 

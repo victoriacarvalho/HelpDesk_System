@@ -159,6 +159,14 @@ export const getAllAdmin = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
+export const getAllUserP = catchAsyncErrors(async (req, res, next) => {
+    const userP = await User.find({ role: "Padrao" });
+    res.status(200).json({
+        success: true,
+        users: userP,
+    });
+});
+
 export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
     const user = req.user;
     res.status(200).json({

@@ -154,18 +154,18 @@ h6 {
   padding-bottom: 60px;
 }
 .form-component h2 {
-  color: gray;
+  color: rgb(0, 0, 0);
   letter-spacing: 4px;
   margin-bottom: 30px;
 }
 .form-component h4 {
-  color: gray;
+  color: rgb(0, 0, 0);
   font-weight: 700;
   margin-bottom: 20px;
 }
 .form-component p {
   max-width: 750px;
-  color: gray;
+  color: rgb(0, 0, 0);
   margin-bottom: 20px;
 }
 .form-component form {
@@ -184,7 +184,7 @@ h6 {
   font-size: 24px;
   padding: 10px 10px 10px 40px;
   border-radius: 7px;
-  border: 1px solid gray;
+  border: 1px solid rgb(0, 0, 0);
 }
 .form-component button {
   padding: 10px 35px;

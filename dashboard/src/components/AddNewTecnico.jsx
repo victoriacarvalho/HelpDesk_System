@@ -57,6 +57,7 @@ const AddNewTecnico = () => {
     { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
       { label: <Link to="/tecnico">Técnico</Link>, key: '2' },
       { label: <Link to="/admins">Administradores</Link>, key: '3' },
+      { label: <Link to="/userP">Usuários</Link>, key: '8' },
     ]},
     { label: 'Adicionar', key: 'sub2', icon: <UserOutlined />, children: [
       { label: <Link to="/admin/addnew">Administrador</Link>, key: '4' },
