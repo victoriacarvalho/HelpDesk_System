@@ -78,7 +78,7 @@ const MessageForm = () => {
             <button type="submit">Enviar</button>
           </div>
         </form>
-        <img src="/Vector.png" alt="vector" />
+        <img src="/Vector.png" alt="vector"  width="700" height="600"  />
       </div>
     </>
   );
