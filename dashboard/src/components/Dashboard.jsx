@@ -451,21 +451,24 @@ const handleAssignCancel = () => {
               <Row gutter={16}>
                 <Col span={12}>
                   <Card title="Métricas Mensais" bordered={false} style={{ borderRadius: '12px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                    <LineChart width={600} height={300} data={monthlyMetrics}>
+                    <BarChart width={600} height={300} data={monthlyMetrics}>
+                    <defs>
+                        <linearGradient id="colorCountBar" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                          <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
                       <XAxis dataKey="monthYear" tick={{ fontSize: 12 }} />
                       <YAxis tick={{ fontSize: 12 }} />
                       <Tooltip contentStyle={{ backgroundColor: '#fff', borderColor: '#ddd' }} />
                       <Legend />
-                      <Line 
-                        type="monotone" 
+                      <Bar 
                         dataKey="count" 
-                        stroke="#007bff" 
-                        strokeWidth={3} 
-                        dot={{ stroke: '#007bff', strokeWidth: 2, r: 4 }}
-                        activeDot={{ stroke: '#0056b3', strokeWidth: 2, r: 6 }}
+                        fill="url(#colorCountBar)" 
+                        barSize={30}
                       />
-                    </LineChart>
+                    </BarChart>
                   </Card>
                 </Col>
                 <Col span={12}>
