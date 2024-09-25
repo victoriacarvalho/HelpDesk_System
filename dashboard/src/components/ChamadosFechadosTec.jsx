@@ -60,7 +60,7 @@ const ChamadosFechadosTec = () => {
     { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
       { label: <Link to="/tecnicoTec">Técnico</Link>, key: '2'},
       { label: <Link to="/adminsTec">Administradores</Link>, key: '3' },
-      { label: <Link to="/userP">Usuários</Link>, key: '8' },
+      { label: <Link to="/userPTec">Usuários</Link>, key: '8' },
     ]},
     { label: <Link to="/messagesTec">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
     { label: <span onClick={handleLogout}>Logout</span>, key: '7', icon: <FileOutlined /> },
@@ -72,7 +72,7 @@ const ChamadosFechadosTec = () => {
       dataIndex: 'requerente',
       key: 'requerente',
       render: (text, record) => (
-        <Link to={`/chamadoDetails/${record._id}`}>
+        <Link to={`/chamadoDetailsTec/${record._id}`}>
           {`${record.firstName} ${record.lastName}`}
         </Link>
       ),
@@ -118,7 +118,7 @@ const ChamadosFechadosTec = () => {
         }}
       >
         <div className="demo-logo-vertical" style={{ padding: '16px', textAlign: 'center' }}>
-          <img src="/logo.png" alt="Logo" style={{ height: 40 }} />
+          <img src="/logo.png" alt="Logo" style={{ height: 120 }} />
         </div>
         <Menu
           theme="dark"
@@ -138,7 +138,7 @@ const ChamadosFechadosTec = () => {
         </Header>
         <Content style={{ margin: '0 16px', background: '#f0f2f5' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item><Link to="/">Dashboard</Link></Breadcrumb.Item>
+            <Breadcrumb.Item><Link to="/dashboardTecnico">Dashboard</Link></Breadcrumb.Item>
             <Breadcrumb.Item>Chamados Fechados</Breadcrumb.Item>
           </Breadcrumb>
           <div style={{ padding: 24, minHeight: 360, background: '#fff', borderRadius: 8, boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>

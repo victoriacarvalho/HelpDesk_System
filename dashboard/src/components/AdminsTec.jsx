@@ -52,7 +52,7 @@ const AdminsTec = () => {
         { label: 'Consultar', key: 'sub1', icon: <UserOutlined />, children: [
             { label: <Link to="/tecnicoTec">Técnico</Link>, key: '2' },
             { label: <Link to="/adminsTec">Administradores</Link>, key: '3' },
-            { label: <Link to="/userP">Usuários</Link>, key: '8' },
+            { label: <Link to="/userPTec">Usuários</Link>, key: '8' },
         ]},
         { label: <Link to="/messagesTec">Mensagens</Link>, key: '6', icon: <TeamOutlined /> },
         { label: <span onClick={handleLogout}>Logout</span>, key: '7', icon: <FileOutlined /> },
