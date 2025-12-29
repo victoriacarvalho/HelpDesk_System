@@ -1,6 +1,6 @@
 # 💻 HelpDesk System
 
-![Badge em Finalizado](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
+![Status](https://img.shields.io/badge/STATUS-CONCLUÍDO-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
 
 O **HelpDesk System** é uma solução completa para gerenciamento de chamados e suporte técnico. O projeto foi desenvolvido utilizando a stack MERN (MongoDB, Express, React, Node.js) e está estruturado como um monorepo contendo três aplicações principais:
